@@ -180,7 +180,7 @@ import { useTableStore } from '../stores/store';
 /* For mobile screens, scale down the table and content */
 @media (max-width: 500px) {
   .table-wrapper {
-    height: fit-content;
+    height: 100%;
   width: 145%;
   display: block;
 }
