@@ -1,5 +1,5 @@
 import axios from "axios";
 export default axios.create({
-    baseURL: 'https://d63d5380fcf15cf7ea6cce0e6f5cc620.serveo.net/api/',
+    baseURL: 'https://340406d7fb25a031fbdf963775b670a0.serveo.net/api/',
     headers: {'X-Custom-Header': 'foobar'},
   });
