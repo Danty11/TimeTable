@@ -186,6 +186,7 @@ import { useTableStore } from '../stores/store';
   display: block;
 }
   .responsive-table {
+    height: 100%;
     transform: scale(0.69); /* Scale down the entire table */
     transform-origin: top left; /* Make sure it scales from the top left */
     width: 100%; /* Ensure the table container fits the screen width */
