@@ -8,7 +8,13 @@
 
 
   const dialog = ref(false)
-  const selectedData = ref(null)
+  const selectedData = ref({
+    materialName:'',
+    doctorName:'',
+    studyHall:'',
+    progress:'',
+    state:''
+  })
 
 
   const openDialog = (data: any) => {
