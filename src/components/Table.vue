@@ -92,8 +92,8 @@
                         <p class="text-center font-weight-bold mt-1" style="font-size: 11.4px; max-width: 80% ">{{ data.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
-                        <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
-                        <p>{{ data.studyHall }}</p>
+                        <p style="max-width: 63%; overflow-x: hidden; font-size: 8px" class="text-no-wrap" >{{ data.doctorName }} </p>
+                        <p style="font-size: 8px;">{{ data.studyHall }}</p>
                       </div>
                     </div>
                   </td>
@@ -179,7 +179,7 @@
 /* For mobile screens, scale down the table and content */
 @media (max-width: 500px) {
   .table-wrapper {
-    height: 248px;
+    height: fit-content;
   width: 145%;
   display: block;
 }
