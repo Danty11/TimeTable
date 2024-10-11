@@ -27,7 +27,7 @@ import { useTableStore } from '../stores/store';
 
 <template>
   <div>
-    <v-container fluid >
+    <v-container fluid class="pa-0" >
       <v-responsive class=" elevation-13" style="border-radius: 20px;">
         <div class="table-wrapper">
           <v-table class="bg-white responsive-table">
