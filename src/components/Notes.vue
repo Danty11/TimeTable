@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { useTableStore } from '../stores/store';
 
+
+
 const reportStore = useTableStore()
 
 onMounted(async () => {

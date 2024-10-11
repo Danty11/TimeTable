@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
-import axios from "@/utils/axios";
-import { Table } from "@/types/type";
-import { report } from "@/types/reportsType";
+import axios from "../utils/axios";
+import { Table } from "../types/type";
+import { report } from "../types/reportsType";
 
 export const useTableStore = defineStore('table-store',() => {
     const TableData = ref<Table[]>([])
