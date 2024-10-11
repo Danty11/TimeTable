@@ -170,7 +170,7 @@ import { useTableStore } from '../stores/store';
 
 <style scoped>
 .table-wrapper {
-  height: 100%;  
+  height: 240px;  
   width: 100%;
   display: block;
 }
@@ -181,6 +181,7 @@ import { useTableStore } from '../stores/store';
 /* For mobile screens, scale down the table and content */
 @media (max-width: 500px) {
   .table-wrapper {
+    height: 100%;
   width: 145%;
   display: block;
 }
