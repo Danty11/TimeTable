@@ -6,31 +6,20 @@ import { useTableStore } from '../stores/store';
   const tableStore = useTableStore()
 
   tableStore.FetchTable()
-
-
   const dialog = ref(false)
   const startEdit = ref(true)
 
-  const selectedData = ref({
-    materialName:'',
-    doctorName:'',
-    studyHall:'',
-    progress:'',
-    state:''
-  })
-
-
-  const openDialog = (data: any) => {
-    selectedData.value = data;
+  const openDialog = async (data: any) => {
+    await tableStore.fetchSingleSubject(data)
     dialog.value = true;
-    
   };
 
 </script>
 
 <template>
-  <div class="ml-16 " style="width: 50%;">
-          <v-table class="bg-white rounded-xl responsive-table elevation-13" style="border: 1px black solid">
+
+  <div class=" d-flex justify-center " style="width: 100%; height: fit-content">
+          <v-table class="bg-white rounded-xl  elevation-13" style="border: 1px black solid">
             <thead class="">
               <tr>
                 <th style="border-right: 1.5px black solid; border-bottom: 1.5px black solid;"></th>
@@ -80,17 +69,18 @@ import { useTableStore } from '../stores/store';
                     v-if="data.materialName"
                     class="class-item"
                     :style="{ backgroundColor: data.color }"
-                    @click="openDialog(data)"
+                    @click="openDialog(data.id)"
                   >
                     <div class=" d-flex flex-column justify-space-between" style="height: 100%;">
-                      <div v-if="data.state == 0"></div>
+                      <div></div>
+                      <div class="position-absolute" v-if="data.state == 0"></div>
                       <div v-else class="position-absolute">
                         <v-chip size="x-small" :color="`${getEnumByValue(statesType,data.state).color}`" variant="tonal">
-                          {{ getEnumByValue(statesType,data.state).arName }}
+                          {{ getEnumByValue(statesType,data.state).name }}
                         </v-chip>
                       </div>
                       <div class="d-flex justify-center">
-                        <p class="text-center font-weight-bold mt-1" style=" max-width: 80% ; font-size: 22px;">{{ data.materialName }}</p>
+                        <p class="text-center font-weight-bold mt-auto" style=" max-width: 80% ; font-size: 20px;">{{ data.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
                         <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
@@ -103,6 +93,8 @@ import { useTableStore } from '../stores/store';
               </tr>
             </tbody>
           </v-table>
+
+          
     <div>
       <v-dialog v-model="dialog" max-width="500px" class="rounded-xl">
         <v-card class="rounded-lg" style="background-color: white; color: black;">
@@ -118,7 +110,7 @@ import { useTableStore } from '../stores/store';
               </v-btn>
             </v-card-actions>
             <v-card-title>
-              <span class="text-h5"> {{ selectedData.materialName }} </span>
+              <span class="text-h5"> {{ tableStore.singleSubject.materialName }} </span>
             </v-card-title>
 
             <v-card-actions>
@@ -135,32 +127,41 @@ import { useTableStore } from '../stores/store';
             
             </v-card-actions>
           </div>
-          <v-card-text dir="rtl" class="d-flex flex-column" v-if="selectedData">
+          <v-card-text dir="rtl" class="d-flex flex-column">
 
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
-              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="selectedData.doctorName" dir="rtl" variant="underlined"></v-text-field>
+              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
-              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="selectedData.studyHall" dir="rtl" variant="underlined"></v-text-field>
+              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
             
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;"> التقدم :</p>
-              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="selectedData.progress" dir="rtl" variant="underlined"></v-text-field>
+              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.progress" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
-            <p class="text-right"><strong>الكوز :</strong> {{ getEnumByValue(statesType, selectedData.state).arName }}</p>
+            <div v-if="startEdit"  class="d-flex ">
+              <p class="ml-2 mt-5" style="font-weight: bold;"><strong>الحالة :</strong></p>
+              <p class="text-grey mt-5" style="font-weight: bold;" >{{ getEnumByValue(statesType,tableStore.singleSubject.state).arName }}</p>
+            </div>
 
-            <v-btn v-if="!startEdit" @click="tableStore.Editlesson(selectedData)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
+            <div v-else class="d-flex">
+              <p class="mt-5 ml-2" style="font-weight: bold;"><strong>الحالة :</strong></p>
+              <v-select v-model="tableStore.singleSubject.state" :disabled="startEdit" :items="statesType" item-title="arName" item-value="value" variant="underlined"></v-select>
+            </div>
+            <v-btn v-if="!startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
+            
           </v-card-text>
         </v-card>
       </v-dialog>
     </div>
   </div>
+
 </template>
 
 

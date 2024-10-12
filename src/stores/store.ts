@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import axios from "../utils/axios";
 import { Table } from "../types/type";
-import { report } from "../types/reportsType";
+import { report, singleSubject } from "../types/reportsType";
 
 export const useTableStore = defineStore('table-store',() => {
     const TableData = ref<Table[]>([])
@@ -15,6 +15,7 @@ export const useTableStore = defineStore('table-store',() => {
         mainAttachment: ""
     })
 
+    const singleSubject = ref<singleSubject>({} as singleSubject)
     const EditMaterial = ref({
         dayOfWeekId: "",
         materialName: "",
@@ -27,6 +28,18 @@ export const useTableStore = defineStore('table-store',() => {
         numberToOrder: "",
         attachment: [] 
     })
+
+
+    const fetchSingleSubject = async(id:number ) => {
+        try{
+            const res = await axios.get(`studymaterial/${id}` )
+            singleSubject.value = res.data
+            console.log(singleSubject.value)
+        }
+        catch (error) {
+            console.log('error fetching data',error)
+        }
+    }
 
     const FetchTable = async () => {
         try {
@@ -73,7 +86,9 @@ export const useTableStore = defineStore('table-store',() => {
         report,
         EditMaterial,
         fetchComplete,
+        singleSubject,
         Editlesson,
+        fetchSingleSubject,
         AddReport,
         FetchReports,
         FetchTable,

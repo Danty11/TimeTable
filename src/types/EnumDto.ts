@@ -16,27 +16,27 @@ type AppEnumGroup = Array<AppEnum>
 
 const statesType : AppEnumGroup = [
     {
-        name: "Nothing",
+        name: "",
         value: 0,
         color: 'warning',
-        arName: 'Q'
+        arName: 'لا يوجد'
     },
     {
-        name: "Quiz",
+        name: "Q",
         value: 1,
         color: 'warning',
-        arName: 'Q'
+        arName: 'كوز'
     },
     {
-        name: "HomeWork",
-        value: 1,
+        name: "H",
+        value: 2,
         color: 'warning',
-        arName: 'H'
+        arName: 'واجب'
     },{
-        name: "Mid",
-        value: 1,
+        name: "M",
+        value: 3,
         color: 'red',
-        arName: 'M'
+        arName: 'مد'
     },
 ]
 

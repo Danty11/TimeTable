@@ -15,4 +15,21 @@ export interface Root {
     attachment: string[]
     mainAttachment: string
   }
+
+  export interface singleSubject {
+    dayOfWeek: any
+    materialName: string
+    doctorName: string
+    studyHall: string
+    color: string
+    description: string
+    progress: string
+    state: number
+    numberToOrder: number
+    attachment: any[]
+    id: string
+    deleted: boolean
+    creationDate: string
+  }
+  
   

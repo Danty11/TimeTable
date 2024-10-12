@@ -4,13 +4,10 @@ import Notes from '@/components/Notes.vue';
 </script>
 
 <template>
-  <div>
-    <div class="pa-4 d-flex">
-
-      <Notes class="mt-4"/>
-      <Table />
-      
-
-    </div>
+  <div class="d-flex" style="width: 100%; height: 100%; ">
+   
+    <Notes class=""/>
+    <Table />
+  
   </div>
 </template>
