@@ -23,7 +23,7 @@ import { useTableStore } from '../stores/store';
   const openDialog = (data: any) => {
     selectedData.value = data;
     dialog.value = true;
-    console.log(selectedData.value.id)
+    
   };
 
 </script>
@@ -155,7 +155,7 @@ import { useTableStore } from '../stores/store';
 
             <p class="text-right"><strong>الكوز :</strong> {{ getEnumByValue(statesType, selectedData.state).arName }}</p>
 
-            <v-btn v-if="!startEdit" @click="tableStore.Editlesson(selectedData)" class="mt-2" size="large" variant="none" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
+            <v-btn v-if="!startEdit" @click="tableStore.Editlesson(selectedData)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>
