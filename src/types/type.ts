@@ -32,3 +32,16 @@ export interface Root {
     numberToOrder: number
     attachment: string[]
   }
+
+  export interface NewSubject {
+    dayOfWeekId: string
+    materialName: string
+    doctorName: string
+    studyHall: string
+    color: string
+    description: string
+    progress: string
+    state: number
+    numberToOrder: number
+    attachment: string[]
+  }

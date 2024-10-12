@@ -48,7 +48,7 @@ const decreaseIndex = () => {
             </div>
 
             <div v-for="note in reportStore.ReportsData" dir="rtl" style="color: black;" class="mt-4">
-                <div class="d-flex elevation-13 pa-2"  >
+                <div class="d-flex elevation-13 pa-2 rounded-">
                     <div class="rounded-lg" style="min-width: 150px; height: 120px; background-color: aqua;"> </div>
                     
                     <div class="d-flex flex-column mr-2" style="max-height: 125px;">

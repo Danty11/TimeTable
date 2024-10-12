@@ -1,13 +1,15 @@
 import { defineStore } from "pinia";
 import axios from "../utils/axios";
-import { Table } from "../types/type";
+import { NewSubject, Table } from "../types/type";
 import { report, singleSubject } from "../types/reportsType";
 
 export const useTableStore = defineStore('table-store',() => {
     const TableData = ref<Table[]>([])
     const ReportsData = ref<report[]>([])
+    const newSubject = ref<NewSubject>({} as NewSubject)
     const fetchComplete = ref(false)
-
+   
+   
     const report =ref({
         title: "",
         description: "",
@@ -30,6 +32,19 @@ export const useTableStore = defineStore('table-store',() => {
     })
 
 
+    
+  
+    const FetchTable = async () => {
+        try {
+            const res = await axios.get('dayofweek_table')
+            TableData.value = res.data
+            console.log(TableData.value)
+          
+        } catch (error) {
+            console.log('error fetching data',error)
+        }
+    }
+
     const fetchSingleSubject = async(id:number ) => {
         try{
             const res = await axios.get(`studymaterial/${id}` )
@@ -40,22 +55,14 @@ export const useTableStore = defineStore('table-store',() => {
             console.log('error fetching data',error)
         }
     }
-
-    const FetchTable = async () => {
-        try {
-            const res = await axios.get('dayofweek_table')
-            TableData.value = res.data
-          
-        } catch (error) {
-            console.log('error fetching data',error)
-        }
+    const addNewSubject = async () => {
+         await axios.post("studymaterial" , newSubject.value)
+         await FetchTable()
     }
-
     const FetchReports = async () => {
         try {
             const res = await axios.get('reports')
-            ReportsData.value = res.data.data    
-            console.log(ReportsData.value)   
+            ReportsData.value = res.data.data     
             fetchComplete.value = true
         } catch (error) {
             console.log('error fetching data',error)
@@ -71,10 +78,10 @@ export const useTableStore = defineStore('table-store',() => {
         }
     }
 
-    const Editlesson = (data:any) => {
+    const Editlesson = async (data:any) => {
         try {
-            axios.put(`studymaterial/${data.id}`,data)
-
+           await axios.put(`studymaterial/${data.id}`,data)
+           await FetchTable()
         } catch (error) {
             console.log(error,'error editing data')
         }
@@ -87,11 +94,13 @@ export const useTableStore = defineStore('table-store',() => {
         EditMaterial,
         fetchComplete,
         singleSubject,
+        newSubject,
         Editlesson,
         fetchSingleSubject,
         AddReport,
         FetchReports,
         FetchTable,
+        addNewSubject,
         
     }
 })

@@ -7,6 +7,7 @@ import { useTableStore } from '../stores/store';
 
   tableStore.FetchTable()
   const dialog = ref(false)
+  const newSubjectDialog = ref(false)
   const startEdit = ref(true)
 
   const openDialog = async (data: any) => {
@@ -88,7 +89,7 @@ import { useTableStore } from '../stores/store';
                       </div>
                     </div>
                   </td>
-                  <td v-else class="class-item " style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
+                  <td v-else class="class-item " @click="newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
                 </template>
               </tr>
             </tbody>
@@ -154,7 +155,61 @@ import { useTableStore } from '../stores/store';
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>الحالة :</strong></p>
               <v-select v-model="tableStore.singleSubject.state" :disabled="startEdit" :items="statesType" item-title="arName" item-value="value" variant="underlined"></v-select>
             </div>
+
+
+            <div v-if="!startEdit"class="d-flex">
+              <p class="mt-5 ml-2" style="font-weight: bold;"><strong>المحاضرة :</strong></p>
+              <v-select v-model="tableStore.singleSubject.numberToOrder" :disabled="startEdit" :items="[1,2,3,4,5]"  variant="underlined"></v-select>
+            </div>
+
+            <div v-if="!startEdit"class="d-flex">
+              <p class="mt-5 ml-2" style="font-weight: bold;"><strong>اليوم :</strong></p>
+              <v-select v-model="tableStore.singleSubject.dayOfWeek" :disabled="startEdit" :items="['الاحد','الاثنين','الثلاثاء','الاربعاء','الخميس']"  variant="underlined"></v-select>
+            </div>
             <v-btn v-if="!startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
+            
+          </v-card-text>
+        </v-card>
+      </v-dialog>
+
+
+      <v-dialog v-model="newSubjectDialog" max-width="500px" class="rounded-xl">
+        <v-card class="rounded-lg" style="background-color: white; color: black;">
+          <div class="d-flex justify-space-between">
+            
+            <v-card-actions>
+              <v-btn color="primary" @click="newSubjectDialog = false">
+                <v-icon
+                  color="blue-grey"
+                  icon="mdi-close"
+                  size="large"
+                ></v-icon>
+              </v-btn>
+            </v-card-actions>
+            <v-card-title>
+              <span class="text-h5"> اضف مادة </span>
+            </v-card-title>
+
+   
+          </div>
+          <v-card-text dir="rtl" class="d-flex flex-column">
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;">اسم المادة :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.materialName" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <v-btn @click="tableStore.addNewSubject()" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
             
           </v-card-text>
         </v-card>
