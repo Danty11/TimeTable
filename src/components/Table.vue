@@ -9,6 +9,8 @@ import { useTableStore } from '../stores/store';
 
 
   const dialog = ref(false)
+  const startEdit = ref(true)
+
   const selectedData = ref({
     materialName:'',
     doctorName:'',
@@ -21,16 +23,14 @@ import { useTableStore } from '../stores/store';
   const openDialog = (data: any) => {
     selectedData.value = data;
     dialog.value = true;
+    console.log(selectedData.value.id)
   };
 
 </script>
 
 <template>
-  <div>
-    <v-container fluid class="pa-0" >
-      <v-responsive class=" elevation-13" style="border-radius: 20px;">
-        <div class="table-wrapper">
-          <v-table class="bg-white responsive-table">
+  <div class="ml-16 " style="width: 50%;">
+          <v-table class="bg-white rounded-xl responsive-table elevation-13" style="border: 1px black solid">
             <thead class="">
               <tr>
                 <th style="border-right: 1.5px black solid; border-bottom: 1.5px black solid;"></th>
@@ -68,7 +68,7 @@ import { useTableStore } from '../stores/store';
             </thead>
             <tbody>
               <tr v-for="day in tableStore.TableData" >
-                <td class="class-item" style="border-right: 1.5px black solid; border-top: 1px black solid;width: 5%;font-size: 14px;font-weight: bold;">
+                <td class="class-item" style="border-right: 1.5px black solid; border-top: 1px black solid;width: 5%;font-size: 18px;font-weight: bold;">
                   <span class="d-flex justify-center">
                     {{ day.dayName }}
                   </span>
@@ -90,11 +90,11 @@ import { useTableStore } from '../stores/store';
                         </v-chip>
                       </div>
                       <div class="d-flex justify-center">
-                        <p class="text-center font-weight-bold mt-1" style="font-size: 11.4px; max-width: 80% ">{{ data.materialName }}</p>
+                        <p class="text-center font-weight-bold mt-1" style=" max-width: 80% ; font-size: 22px;">{{ data.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
-                        <p style="max-width: 63%; overflow-x: hidden; font-size: 8px" class="text-no-wrap" >{{ data.doctorName }} </p>
-                        <p style="font-size: 8px;">{{ data.studyHall }}</p>
+                        <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
+                        <p style="">{{ data.studyHall }}</p>
                       </div>
                     </div>
                   </td>
@@ -103,13 +103,11 @@ import { useTableStore } from '../stores/store';
               </tr>
             </tbody>
           </v-table>
-        </div>
-      </v-responsive>
-    </v-container>
     <div>
       <v-dialog v-model="dialog" max-width="500px" class="rounded-xl">
-        <v-card>
+        <v-card class="rounded-lg" style="background-color: white; color: black;">
           <div class="d-flex justify-space-between">
+            
             <v-card-actions>
               <v-btn color="primary" @click="dialog = false">
                 <v-icon
@@ -122,44 +120,42 @@ import { useTableStore } from '../stores/store';
             <v-card-title>
               <span class="text-h5"> {{ selectedData.materialName }} </span>
             </v-card-title>
+
             <v-card-actions>
-              <v-dialog max-width="500">
-                <template v-slot:activator="{ props: activatorProps }">
-                  <v-btn
-                    v-bind="activatorProps"
-                    color="primary"
-                  > 
+              <v-btn
+                   @click="startEdit=!startEdit"
+                    color="primary"> 
                   <v-icon 
+                  
                   color="blue-grey"
-                  icon="mdi-pencil-box-outline"
+                  :icon="startEdit == true ?'mdi-pencil-box-outline' : 'mdi-close'"
                   size="large"
-                  ></v-icon> </v-btn>
-                </template>
-
-                <template v-slot:default="{ isActive }">
-                  <v-card title="Dialog">
-                    <v-card-text>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                    </v-card-text>
-
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-
-                      <v-btn
-                        text="Close Dialog"
-                        @click="isActive.value = false"
-                      ></v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </template>
-              </v-dialog>
+                  ></v-icon> 
+                </v-btn>
+            
             </v-card-actions>
           </div>
-          <v-card-text v-if="selectedData">
-            <p class="text-right"><strong>اسم التدريسي :</strong> {{ selectedData.doctorName  }}</p>
-            <p class="text-right"><strong>القاعة :</strong> {{ selectedData.studyHall }}</p>
-            <p class="text-right"><strong>التقدم :</strong> {{ selectedData.progress }}</p>
+          <v-card-text dir="rtl" class="d-flex flex-column" v-if="selectedData">
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
+              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="selectedData.doctorName" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
+              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="selectedData.studyHall" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> التقدم :</p>
+              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="selectedData.progress" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
             <p class="text-right"><strong>الكوز :</strong> {{ getEnumByValue(statesType, selectedData.state).arName }}</p>
+
+            <v-btn v-if="!startEdit" @click="tableStore.Editlesson(selectedData)" class="mt-2" size="large" variant="none" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -170,7 +166,6 @@ import { useTableStore } from '../stores/store';
 
 <style scoped>
 .table-wrapper {
-  height: 240px;  
   width: 100%;
   display: block;
 }
@@ -181,11 +176,14 @@ import { useTableStore } from '../stores/store';
 /* For mobile screens, scale down the table and content */
 @media (max-width: 500px) {
   .table-wrapper {
-  width: 145%;
-  display: block;
+    height: 100%;
+    width: 145%;
+    display: block;
+ 
 }
   .responsive-table {
-    height: 100%;
+    
+    
     transform: scale(0.69); /* Scale down the entire table */
     transform-origin: top left; /* Make sure it scales from the top left */
     width: 100%; /* Ensure the table container fits the screen width */

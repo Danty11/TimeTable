@@ -5,9 +5,12 @@ import Notes from '@/components/Notes.vue';
 
 <template>
   <div>
-    <Table  class="mb-3"/>
-    <div class="pa-6 rounded-xl" style="background-color: azure;">
-      <Notes />
+    <div class="pa-4 d-flex">
+
+      <Notes class="mt-4"/>
+      <Table />
+      
+
     </div>
   </div>
 </template>

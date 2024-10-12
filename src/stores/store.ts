@@ -6,6 +6,7 @@ import { report } from "../types/reportsType";
 export const useTableStore = defineStore('table-store',() => {
     const TableData = ref<Table[]>([])
     const ReportsData = ref<report[]>([])
+    const fetchComplete = ref(false)
 
     const report =ref({
         title: "",
@@ -15,15 +16,15 @@ export const useTableStore = defineStore('table-store',() => {
     })
 
     const EditMaterial = ref({
-        dayOfWeekId: String,
-        materialName: String,
-        doctorName: String,
-        studyHall: String,
-        color: String,
-        description: String,
-        progress: String,
-        state: String,
-        numberToOrder: String,
+        dayOfWeekId: "",
+        materialName: "",
+        doctorName: "",
+        studyHall: "",
+        color: "",
+        description: "",
+        progress: "",
+        state: "",
+        numberToOrder: "",
         attachment: [] 
     })
 
@@ -31,7 +32,7 @@ export const useTableStore = defineStore('table-store',() => {
         try {
             const res = await axios.get('dayofweek_table')
             TableData.value = res.data
-            console.log(res.data)
+          
         } catch (error) {
             console.log('error fetching data',error)
         }
@@ -40,7 +41,9 @@ export const useTableStore = defineStore('table-store',() => {
     const FetchReports = async () => {
         try {
             const res = await axios.get('reports')
-            ReportsData.value = res.data.data        
+            ReportsData.value = res.data.data    
+            console.log(ReportsData.value)   
+            fetchComplete.value = true
         } catch (error) {
             console.log('error fetching data',error)
         }
@@ -55,11 +58,10 @@ export const useTableStore = defineStore('table-store',() => {
         }
     }
 
-    const Editlesson = (data:any,isActive:any) => {
+    const Editlesson = (data:any) => {
         try {
-            axios.put(`studymaterial/${data.id}`,EditMaterial.value)
-            isActive.value = false
-            window.location.reload()
+            axios.put(`studymaterial/${data.id}`,data)
+
         } catch (error) {
             console.log(error,'error editing data')
         }
@@ -70,6 +72,7 @@ export const useTableStore = defineStore('table-store',() => {
         ReportsData,
         report,
         EditMaterial,
+        fetchComplete,
         Editlesson,
         AddReport,
         FetchReports,
