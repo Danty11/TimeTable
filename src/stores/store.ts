@@ -8,7 +8,9 @@ export const useTableStore = defineStore('table-store',() => {
     const ReportsData = ref<report[]>([])
     const newSubject = ref<NewSubject>({} as NewSubject)
     const fetchComplete = ref(false)
-   
+    const dialog = ref(false)
+    const newSubjectDialog = ref(false)
+    const startEdit = ref(true)
    
     const report =ref({
         title: "",
@@ -55,11 +57,26 @@ export const useTableStore = defineStore('table-store',() => {
     const addNewSubject = async () => {
          await axios.post("studymaterial" , newSubject.value)
          await FetchTable()
+         newSubjectDialog.value = false
+
+    }
+    const Editlesson = async (data:any) => {
+        try {
+           await axios.put(`studymaterial/${data.id}`,data)
+           await FetchTable()
+           startEdit.value = true
+           dialog.value = false
+        } catch (error) {
+            console.log(error,'error editing data')
+        }
     }
 
     const removeSubject = async(id: any) => {
         await axios.delete(`studymaterial/${id}`)
         await FetchTable()
+        startEdit.value = true
+           dialog.value = false
+
     }
 
     const FetchReports = async () => {
@@ -81,14 +98,7 @@ export const useTableStore = defineStore('table-store',() => {
         }
     }
 
-    const Editlesson = async (data:any) => {
-        try {
-           await axios.put(`studymaterial/${data.id}`,data)
-           await FetchTable()
-        } catch (error) {
-            console.log(error,'error editing data')
-        }
-    }
+
 
     return{
         TableData,
@@ -98,6 +108,9 @@ export const useTableStore = defineStore('table-store',() => {
         fetchComplete,
         singleSubject,
         newSubject,
+        dialog,
+        startEdit,
+        newSubjectDialog,
         Editlesson,
         fetchSingleSubject,
         AddReport,

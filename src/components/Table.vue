@@ -6,13 +6,11 @@ import { useTableStore } from '../stores/store';
   const tableStore = useTableStore()
 
   tableStore.FetchTable()
-  const dialog = ref(false)
-  const newSubjectDialog = ref(false)
-  const startEdit = ref(true)
+  
 
   const openDialog = async (data: any) => {
     await tableStore.fetchSingleSubject(data)
-    dialog.value = true;
+    tableStore.dialog = true;
   };
 
 </script>
@@ -66,7 +64,7 @@ import { useTableStore } from '../stores/store';
                 <template v-for="( data, index) in day.studyMaterials" :key="index">
                   <td
                   dir="rtl"
-                    style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%;"
+                    style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%; max-height: 81px; max-width: 153.9"
                     v-if="data.materialName"
                     class="class-item"
                     :style="{ backgroundColor: data.color }"
@@ -89,7 +87,7 @@ import { useTableStore } from '../stores/store';
                       </div>
                     </div>
                   </td>
-                  <td v-else class="class-item " @click="newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
+                  <td v-else class="class-item " @click="tableStore.newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
                 </template>
               </tr>
             </tbody>
@@ -98,12 +96,12 @@ import { useTableStore } from '../stores/store';
           
     <div>
       <!-- edit subject  dialog -->
-      <v-dialog v-model="dialog" max-width="500px" class="rounded-xl">
+      <v-dialog v-model="tableStore.dialog" max-width="500px" class="rounded-xl">
         <v-card class="rounded-lg" style="background-color: white; color: black;">
           <div class="d-flex justify-space-between">
             
             <v-card-actions>
-              <v-btn color="primary" @click="dialog = false">
+              <v-btn color="primary" @click="tableStore.dialog = false">
                 <v-icon
                   color="blue-grey"
                   icon="mdi-close"
@@ -117,12 +115,12 @@ import { useTableStore } from '../stores/store';
 
             <v-card-actions>
               <v-btn
-                   @click="startEdit=!startEdit"
+                   @click="tableStore.startEdit= !tableStore.startEdit"
                     color="primary"> 
                   <v-icon 
                   
                   color="blue-grey"
-                  :icon="startEdit == true ?'mdi-pencil-box-outline' : 'mdi-close'"
+                  :icon="tableStore.startEdit == true ?'mdi-pencil-box-outline' : 'mdi-close'"
                   size="large"
                   ></v-icon> 
                 </v-btn>
@@ -133,54 +131,54 @@ import { useTableStore } from '../stores/store';
 
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
-              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
+              <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
-              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
+              <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
             
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;"> التقدم :</p>
-              <v-text-field :disabled="startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.progress" dir="rtl" variant="underlined"></v-text-field>
+              <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.progress" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
-            <div v-if="startEdit"  class="d-flex ">
+            <div v-if="tableStore.startEdit"  class="d-flex ">
               <p class="ml-2 mt-5" style="font-weight: bold;"><strong>الحالة :</strong></p>
               <p class="text-grey mt-5" style="font-weight: bold;" >{{ getEnumByValue(statesType,tableStore.singleSubject.state).arName }}</p>
             </div>
 
             <div v-else class="d-flex">
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>الحالة :</strong></p>
-              <v-select v-model="tableStore.singleSubject.state" :disabled="startEdit" :items="statesType" item-title="arName" item-value="value" variant="underlined"></v-select>
+              <v-select v-model="tableStore.singleSubject.state" :disabled="tableStore.startEdit" :items="statesType" item-title="arName" item-value="value" variant="underlined"></v-select>
             </div>
 
 
-            <div v-if="!startEdit"class="d-flex">
+            <div v-if="!tableStore.startEdit"class="d-flex">
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>المحاضرة :</strong></p>
-              <v-select v-model="tableStore.singleSubject.numberToOrder" :disabled="startEdit" :items="[1,2,3,4,5]"  variant="underlined"></v-select>
+              <v-select v-model="tableStore.singleSubject.numberToOrder" :disabled="tableStore.startEdit" :items="[1,2,3,4,5]"  variant="underlined"></v-select>
             </div>
 
-            <div v-if="!startEdit"class="d-flex">
+            <div v-if="!tableStore.startEdit"class="d-flex">
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>اليوم :</strong></p>
-              <v-select v-model="tableStore.singleSubject.dayOfWeek" :disabled="startEdit" :items="['الاحد','الاثنين','الثلاثاء','الاربعاء','الخميس']"  variant="underlined"></v-select>
+              <v-select v-model="tableStore.singleSubject.dayOfWeek" :disabled="tableStore.startEdit" :items="['الاحد','الاثنين','الثلاثاء','الاربعاء','الخميس']"  variant="underlined"></v-select>
             </div>
-            <v-btn v-if="!startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
-            <v-btn v-if="!startEdit" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
+            <v-btn v-if="!tableStore.startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
+            <v-btn v-if="!tableStore.startEdit" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>
 
 
       <!-- adding subject dialog -->
-      <v-dialog v-model="newSubjectDialog" max-width="500px" class="rounded-xl">
+      <v-dialog v-model="tableStore.newSubjectDialog" max-width="500px" class="rounded-xl">
         <v-card class="rounded-lg" style="background-color: white; color: black;">
           <div class="d-flex justify-space-between">
             
             <v-card-actions>
-              <v-btn color="primary" @click="newSubjectDialog = false">
+              <v-btn color="primary" @click="tableStore.newSubjectDialog = false">
                 <v-icon
                   color="blue-grey"
                   icon="mdi-close"
