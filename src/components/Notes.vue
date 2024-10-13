@@ -36,10 +36,7 @@ const decreaseIndex = () => {
 </script>
 
 <template>
-    <div class="d-flex " style="width: 60%;  ">
-
-
-
+    <div class="d-flex " style="width: 60%;">
         <div class="elevation-13 pa-4" style="min-width: 80%; height: 100%; " >
             
             <div class="d-flex justify-space-between">
@@ -48,18 +45,20 @@ const decreaseIndex = () => {
             </div>
 
             <div v-for="note in reportStore.ReportsData" dir="rtl" style="color: black;" class="mt-4">
-                <div class="d-flex elevation-13 pa-2 rounded-">
-                    <div class="rounded-lg" style="min-width: 150px; height: 120px; background-color: aqua;"> </div>
-                    
-                    <div class="d-flex flex-column mr-2" style="max-height: 125px;">
-                        <p style="font-size: larger; font-weight: bold;">{{ note.title }}</p>
-                        <p style="overflow-y: hidden;">{{ note.description }}</p>
+                <div class="d-flex justify-space-between elevation-13 pa-2 rounded-">
+                    <div class="d-flex">
+                        <div class="rounded-lg" style="min-width: 150px; height: 120px; background-color: aqua;"> </div>
+                        
+                        <div class="d-flex flex-column mr-2" style="max-height: 125px;">
+                            <p style="font-size: larger; font-weight: bold;">{{ note.title }}</p>
+                            <p style="overflow-y: hidden;">{{ note.description }}</p>
+                        </div>
+                    </div>
+                    <div>
+                        <v-icon @click="reportStore.deleteReport(note.id)" :size="25" :color="isHovering ? 'red-accent-4' : 'blue-grey'" icon="mdi-close-circle"></v-icon>
                     </div>
                 </div>
             </div>
         </div>
-
-     
-
     </div>
 </template>

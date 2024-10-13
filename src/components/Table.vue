@@ -6,7 +6,29 @@ import { useTableStore } from '../stores/store';
   const tableStore = useTableStore()
 
   tableStore.FetchTable()
-  
+
+  const days = [
+    {
+      day:'الاحد',
+      id:'da3c96a1-9bf4-4755-a283-3696b82a8b67'
+    },
+    {
+      day:'الاثنين',
+      id:'ffc9b5d6-7410-4101-941f-d4b13c0c4e2b'
+    },
+    {
+      day:'الثلاثاء',
+      id:'8a99f63c-6975-4dbf-a72c-d37bb1f42e27'
+    },
+    {
+      day:'الاربعاء',
+      id:'18056d73-329f-49f3-a7d1-885c15692641'
+    },
+    {
+      day:'الخميس',
+      id:'32178ff1-cd65-4eda-bd10-c848442eaa1b'
+    },
+  ]
 
   const openDialog = async (data: any) => {
     await tableStore.fetchSingleSubject(data)
@@ -163,8 +185,9 @@ import { useTableStore } from '../stores/store';
 
             <div v-if="!tableStore.startEdit"class="d-flex">
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>اليوم :</strong></p>
-              <v-select v-model="tableStore.singleSubject.dayOfWeek" :disabled="tableStore.startEdit" :items="['الاحد','الاثنين','الثلاثاء','الاربعاء','الخميس']"  variant="underlined"></v-select>
+              <v-select v-model="tableStore.singleSubject.dayOfWeekId" :disabled="tableStore.startEdit" :items="days" item-value="id" item-title="day" variant="underlined"></v-select>
             </div>
+            <v-color-picker v-if="!tableStore.startEdit" v-model="tableStore.singleSubject.color" :modes="['hex']" hide-inputs></v-color-picker>
             <v-btn v-if="!tableStore.startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
             <v-btn v-if="!tableStore.startEdit" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
           </v-card-text>
@@ -208,6 +231,8 @@ import { useTableStore } from '../stores/store';
               <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
               <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
             </div>
+
+            <v-color-picker v-model="tableStore.newSubject.color" :modes="['hex']" hide-inputs></v-color-picker>
 
             <v-btn @click="tableStore.addNewSubject()" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
           </v-card-text>

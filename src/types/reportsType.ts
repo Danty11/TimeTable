@@ -18,6 +18,7 @@ export interface Root {
 
   export interface singleSubject {
     dayOfWeek: any
+    dayOfWeekId:String
     materialName: string
     doctorName: string
     studyHall: string

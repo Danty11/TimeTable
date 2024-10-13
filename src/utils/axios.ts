@@ -24,12 +24,12 @@ axiosIns.interceptors.request.use(config => {
 
 // ℹ️ Add response interceptor to handle 401 response
 axiosIns.interceptors.response.use(response => {
+   
     return response
 }, error => {
-    console.log(error)
 
-    // Handle error
-    if (error.response.status === 401) {
+      // Handle error
+      if (error.response.status === 401) {
         // ℹ️ Logout user and redirect to login page
         // Remove "userData" from localStorage
         localStorage.removeItem('userData')
@@ -40,6 +40,14 @@ axiosIns.interceptors.response.use(response => {
         window.location.assign("/login")
         
     }
+    if (error.response.status  <= 400)
+    {
+        alert(error.response.data.message)
+    }
+    
+
+
+  
 })
 
 export default axiosIns

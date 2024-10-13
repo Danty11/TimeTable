@@ -11,6 +11,7 @@ export const useTableStore = defineStore('table-store',() => {
     const dialog = ref(false)
     const newSubjectDialog = ref(false)
     const startEdit = ref(true)
+    const singleSubject = ref<singleSubject>({} as singleSubject)
    
     const report =ref({
         title: "",
@@ -19,7 +20,7 @@ export const useTableStore = defineStore('table-store',() => {
         mainAttachment: ""
     })
 
-    const singleSubject = ref<singleSubject>({} as singleSubject)
+    
     const EditMaterial = ref({
         dayOfWeekId: "",
         materialName: "",
@@ -55,15 +56,19 @@ export const useTableStore = defineStore('table-store',() => {
         }
     }
     const addNewSubject = async () => {
-         await axios.post("studymaterial" , newSubject.value)
+        const res = await axios.post("studymaterial" , newSubject.value)
          await FetchTable()
+         if(res.status == 200)
+            alert("تمت العملية بنجاح")
          newSubjectDialog.value = false
 
     }
     const Editlesson = async (data:any) => {
         try {
-           await axios.put(`studymaterial/${data.id}`,data)
+            const res = await axios.put(`studymaterial/${data.id}`,data)
            await FetchTable()
+           if(res.status == 200)
+            alert("تمت العملية بنجاح")
            startEdit.value = true
            dialog.value = false
         } catch (error) {
@@ -72,8 +77,11 @@ export const useTableStore = defineStore('table-store',() => {
     }
 
     const removeSubject = async(id: any) => {
-        await axios.delete(`studymaterial/${id}`)
+       const res = await axios.delete(`studymaterial/${id}`)
         await FetchTable()
+        if(res.status == 200)
+            alert("تمت العملية بنجاح")
+
         startEdit.value = true
            dialog.value = false
 
@@ -91,11 +99,19 @@ export const useTableStore = defineStore('table-store',() => {
 
     const AddReport = () =>{
         try {
-            axios.post('reports',report)
+             axios.post('reports',report)
+            
             
         } catch (error) {
             console.log('error sending data',error)
         }
+    }
+    
+    const deleteReport = async (id:any) => {
+       const res = await axios.delete(`reports/${id}`)
+        await FetchReports()
+        if(res.status == 200)
+            alert("تمت العملية بنجاح")
     }
 
 
@@ -118,5 +134,6 @@ export const useTableStore = defineStore('table-store',() => {
         FetchTable,
         addNewSubject,
         removeSubject,
+        deleteReport,
     }
 })
