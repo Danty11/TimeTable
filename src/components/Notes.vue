@@ -59,32 +59,46 @@ const decreaseIndex = () => {
             </div>
         </div>
 
-        <!-- <div class="elevation-13 py-4 d-flex rounded-lg " style="min-width: 800px; height: 100%;">
-            <div class="my-auto" style="color: black;">
-                <v-btn  size="x-large" rounded="lg" variant="none" @click="increaseIndex()">
-                    <v-icon size="x-large" icon="mdi-arrow-left"></v-icon>
-                </v-btn>
-            </div>
-
-          <div class="d-flex flex-column my-6" style="width: 100%;">
-              <div style=" width: 100%; max-height:fit-content ; margin: 0px auto;"> 
-                <img v-if="reportStore.ReportsData[index]" :src="'https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io//' +reportStore.ReportsData[index].mainAttachment" class="d-flex mx-auto mb-2 rounded-lg" style="object-fit: fill;" />
-              </div>
-            <div dir="rtl" style="color: black; width: 90%;" class="d-flex flex-column mx-auto">
-                <div v-if="reportStore.fetchComplete">
-                    <p class="mb-1" style="font-weight: bold; font-size: larger;" >{{ reportStore.ReportsData[index].title }}</p>
-                    <p style="width: 100%; height: fit-content; word-wrap: break-word">{{ reportStore.ReportsData[index].description }}</p>
-                </div>
-            </div>
+        <v-dialog v-model="tableStore.newSubjectDialog" max-width="500px" class="rounded-xl">
+        <v-card class="rounded-lg" style="background-color: white; color: black;">
+          <div class="d-flex justify-space-between">
             
-          </div>
+            <v-card-actions>
+              <v-btn color="primary" @click="tableStore.newSubjectDialog = false">
+                <v-icon
+                  color="blue-grey"
+                  icon="mdi-close"
+                  size="large"
+                ></v-icon>
+              </v-btn>
+            </v-card-actions>
+            <v-card-title>
+              <span class="text-h5"> اضف مادة </span>
+            </v-card-title>
 
-            <div class="my-auto" style="color: black;">
-                <v-btn size="x-large" rounded="lg" variant="none" @click="decreaseIndex()">
-                    <v-icon size="x-large" icon="mdi-arrow-right"></v-icon>
-                </v-btn>
+   
+          </div>
+          <v-card-text dir="rtl" class="d-flex flex-column">
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;">اسم المادة :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.materialName" dir="rtl" variant="underlined"></v-text-field>
             </div>
-        </div> -->
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <v-btn @click="tableStore.addNewSubject()" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
+          </v-card-text>
+        </v-card>
+      </v-dialog>
 
     </div>
 </template>

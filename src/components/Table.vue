@@ -64,7 +64,7 @@ import { useTableStore } from '../stores/store';
                 <template v-for="( data, index) in day.studyMaterials" :key="index">
                   <td
                   dir="rtl"
-                    style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%; max-height: 81px; max-width: 153.9"
+                    style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%; max-height: 81px; max-width: 180px"
                     v-if="data.materialName"
                     class="class-item"
                     :style="{ backgroundColor: data.color }"
@@ -79,7 +79,7 @@ import { useTableStore } from '../stores/store';
                         </v-chip>
                       </div>
                       <div class="d-flex justify-center">
-                        <p class="text-center font-weight-bold mt-auto" style=" max-width: 78% ; font-size: 20px;">{{ data.materialName }}</p>
+                        <p class="text-center font-weight-bold mt-auto" style=" max-width: 80% ; font-size: 20px;">{{ data.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
                         <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
