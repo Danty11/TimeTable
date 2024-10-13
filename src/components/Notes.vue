@@ -59,46 +59,7 @@ const decreaseIndex = () => {
             </div>
         </div>
 
-        <v-dialog v-model="tableStore.newSubjectDialog" max-width="500px" class="rounded-xl">
-        <v-card class="rounded-lg" style="background-color: white; color: black;">
-          <div class="d-flex justify-space-between">
-            
-            <v-card-actions>
-              <v-btn color="primary" @click="tableStore.newSubjectDialog = false">
-                <v-icon
-                  color="blue-grey"
-                  icon="mdi-close"
-                  size="large"
-                ></v-icon>
-              </v-btn>
-            </v-card-actions>
-            <v-card-title>
-              <span class="text-h5"> اضف مادة </span>
-            </v-card-title>
-
-   
-          </div>
-          <v-card-text dir="rtl" class="d-flex flex-column">
-
-            <div class="d-flex ">
-              <p class="mt-5 ml-2" style="font-weight: bold;">اسم المادة :</p>
-              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.materialName" dir="rtl" variant="underlined"></v-text-field>
-            </div>
-
-            <div class="d-flex ">
-              <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
-              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
-            </div>
-
-            <div class="d-flex ">
-              <p class="mt-5 ml-2" style="font-weight: bold;"> القاعة :</p>
-              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
-            </div>
-
-            <v-btn @click="tableStore.addNewSubject()" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
-          </v-card-text>
-        </v-card>
-      </v-dialog>
+     
 
     </div>
 </template>
