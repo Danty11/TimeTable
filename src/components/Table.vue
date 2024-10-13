@@ -81,7 +81,7 @@ import { useTableStore } from '../stores/store';
                         </v-chip>
                       </div>
                       <div class="d-flex justify-center">
-                        <p class="text-center font-weight-bold mt-auto" style=" max-width: 80% ; font-size: 20px;">{{ data.materialName }}</p>
+                        <p class="text-center font-weight-bold mt-auto" style=" max-width: 78% ; font-size: 20px;">{{ data.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
                         <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
@@ -97,6 +97,7 @@ import { useTableStore } from '../stores/store';
 
           
     <div>
+      <!-- edit subject  dialog -->
       <v-dialog v-model="dialog" max-width="500px" class="rounded-xl">
         <v-card class="rounded-lg" style="background-color: white; color: black;">
           <div class="d-flex justify-space-between">
@@ -167,12 +168,13 @@ import { useTableStore } from '../stores/store';
               <v-select v-model="tableStore.singleSubject.dayOfWeek" :disabled="startEdit" :items="['الاحد','الاثنين','الثلاثاء','الاربعاء','الخميس']"  variant="underlined"></v-select>
             </div>
             <v-btn v-if="!startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
-            
+            <v-btn v-if="!startEdit" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>
 
 
+      <!-- adding subject dialog -->
       <v-dialog v-model="newSubjectDialog" max-width="500px" class="rounded-xl">
         <v-card class="rounded-lg" style="background-color: white; color: black;">
           <div class="d-flex justify-space-between">
@@ -210,7 +212,6 @@ import { useTableStore } from '../stores/store';
             </div>
 
             <v-btn @click="tableStore.addNewSubject()" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
-            
           </v-card-text>
         </v-card>
       </v-dialog>

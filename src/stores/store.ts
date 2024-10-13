@@ -31,9 +31,6 @@ export const useTableStore = defineStore('table-store',() => {
         attachment: [] 
     })
 
-
-    
-  
     const FetchTable = async () => {
         try {
             const res = await axios.get('dayofweek_table')
@@ -59,6 +56,12 @@ export const useTableStore = defineStore('table-store',() => {
          await axios.post("studymaterial" , newSubject.value)
          await FetchTable()
     }
+
+    const removeSubject = async(id: any) => {
+        await axios.delete(`studymaterial/${id}`)
+        await FetchTable()
+    }
+
     const FetchReports = async () => {
         try {
             const res = await axios.get('reports')
@@ -101,6 +104,6 @@ export const useTableStore = defineStore('table-store',() => {
         FetchReports,
         FetchTable,
         addNewSubject,
-        
+        removeSubject,
     }
 })
