@@ -41,14 +41,6 @@ axiosIns.interceptors.response.use(response => {
         window.location.assign("/login")
         
     }
-    if (error.response.status  <= 400)
-    {
-        toast.warning(error.response.data.message)
-    }
-    
-
-
-  
 })
 
 export default axiosIns

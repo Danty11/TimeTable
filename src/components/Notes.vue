@@ -13,7 +13,7 @@ onMounted(async () => {
 <template>
     
     
-        <div class="elevation-13 pa-4" style="min-width: 35%; overflow-y:scroll ; scrollbar-width: none; ">
+        <div class="elevation-13 pa-4" style="min-width: 35%; max-width: 40%; overflow-y:scroll ; scrollbar-width: none; ">
             
             <div class="d-flex justify-space-between" dir="rtl" >
                 <v-btn @click="reportStore.reportsDialog = true , reportStore.file = []" elevation="4" rounded="lg" size="x-large" class="bg-white"> <v-icon icon="mdi-plus-circle-outline"></v-icon> <span style="font-weight: bold;">تبليغ</span></v-btn>

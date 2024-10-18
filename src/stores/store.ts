@@ -54,6 +54,7 @@ export const useTableStore = defineStore('table-store',() => {
     
 
     const addNewSubject = async () => {
+        try{
         loading.value = true
         if(file.value.length != 0)
             await newSubjectsendPdf()
@@ -65,6 +66,14 @@ export const useTableStore = defineStore('table-store',() => {
             toast.success("تمت الاضافة بنجاح")
          newSubjectDialog.value = false
          loading.value = false
+}
+catch(error)
+{
+    
+    newSubjectDialog.value = false
+    loading.value = false
+    toast.success("حدث خطاء")
+}
 
     }
 
@@ -84,11 +93,15 @@ export const useTableStore = defineStore('table-store',() => {
            dialog.value = false
            loading.value = false
         } catch (error) {
-            console.log(error,'error editing data')
+            startEdit.value = true
+           dialog.value = false
+           loading.value = false
+           toast.warning("حدث خطاء ما")
         }
     }
 
     const removeSubject = async(id: any) => {
+        try{
         loading.value = true
        const res = await axios.delete(`studymaterial/${id}`)
         await FetchTable()
@@ -98,6 +111,13 @@ export const useTableStore = defineStore('table-store',() => {
         startEdit.value = true
            dialog.value = false
            loading.value = false
+}
+catch(error){
+    startEdit.value = true
+       dialog.value = false
+       loading.value = false
+       toast.warning("حدث خطاء ما")
+}
 
     }
 
@@ -113,12 +133,21 @@ export const useTableStore = defineStore('table-store',() => {
 
     
     const deleteReport = async (id:any) => {
+        try{
         deleteLoading.value = true
        const res = await axios.delete(`reports/${id}`)
         await FetchReports()
         if(res.status == 200)
             toast.success("تم الحذف بنجاح")
         deleteLoading.value = false
+}
+catch(error)
+{
+    deleteLoading.value = false
+    toast.warning('حدث خطاء ما')
+}
+        
+
     }
 
     const handleFile = async (event: any) => {
@@ -144,7 +173,7 @@ export const useTableStore = defineStore('table-store',() => {
 const handleimg = async (event: any) => {
 
        
-    file.value = event.target.files 
+    file.value = event.target.files
     console.log(file.value)
    
    
@@ -153,30 +182,30 @@ const handleimg = async (event: any) => {
     const sendReportImage = async() => {
 
         image.append("files", file.value[0])
+        console.log(image.get("files"))
         const res = await axios.post( "file/multi" , image)
         report.value.mainAttachment = res.data[0].url
         file.value = []
-        
+        image.delete("files")
     }
     const sendPdf = async() => {
-      
-        for(var i = 0 ; i <file.value.length ; i++)
-            {
-                pdf.append("files", file.value[i])   
-            }
+    
+                pdf.append("files", file.value[0])   
+                
+            
         const res = await axios.post( "file/multi" , pdf)
        
             singleSubject.value.attachment[0] = res.data[0].url
     
             file.value = []
+            pdf.delete("files")
     }
 
     const newSubjectsendPdf = async() => {
       
-        for(var i = 0 ; i <file.value.length ; i++)
-            {
-                pdf.append("files", file.value[i])   
-            }
+    
+                pdf.append("files", file.value[0])   
+            
         const res = await axios.post( "file/multi" , pdf)
             
         newSubject.value.attachment = []
@@ -186,6 +215,8 @@ const handleimg = async (event: any) => {
     }
 
     const addReport = async() => {
+try{
+
 
         loading.value = true
         if(file.value.length != 0)
@@ -200,9 +231,19 @@ const handleimg = async (event: any) => {
        {
         toast.success("تمت العملية بنجاح")
        }
+     
+     
        reportsDialog.value = false
         loading.value = false
         report.value = {} as AddReport
+    }
+    catch(error)
+    {
+        toast.warning("حدث خطاء ما")
+        reportsDialog.value = false
+        loading.value = false
+        report.value = {} as AddReport
+    }
     }
 
 
