@@ -312,6 +312,7 @@ import { useTableStore } from '../stores/store';
                 <div class="d-flex mb-4">
                   <p style="font-weight: bold;">الملازم:</p>
                   <div v-for="pdf in tableStore.file">
+                    <div style="display: none">{{ pdf }}</div>
                   <v-icon @click="tableStore.removePdfInEdit()"  style="position: relative;" class="pb-5 pr-3" size="small" variant="text" icon="mdi-close-circle-outline"></v-icon>
                   <v-icon size="large" icon="mdi-file-powerpoint"></v-icon>
                 </div>

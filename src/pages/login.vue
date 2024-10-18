@@ -8,7 +8,7 @@ const info = ref({
     password: ''
 })
 
-const required = (v) => {
+const required = (v:any) => {
         return !!v || 'Field is required'
       }
 
