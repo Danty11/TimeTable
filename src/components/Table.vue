@@ -238,6 +238,14 @@ import { useTableStore } from '../stores/store';
               <v-select v-model="tableStore.singleSubject.state" :disabled="tableStore.startEdit" :items="statesType" item-title="arName" item-value="value" variant="underlined"></v-select>
             </div>
 
+            <div v-if="!tableStore.startEdit" class="d-flex flex-column ">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> التعليقات </p>
+              <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.description" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+            <div v-else>
+              <p class="mt-5 ml-2" style="font-weight: bold;"> التعليقات </p>
+              <p class="pa-2" style="font-weight: bold; border: 1px gray solid; border-radius: 10px;min-height: 60px" dir="rtl" variant="underlined"> {{ tableStore.singleSubject.description }}</p>
+            </div>
 
             <div v-if="!tableStore.startEdit"class="d-flex">
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>المحاضرة :</strong></p>
@@ -307,6 +315,16 @@ import { useTableStore } from '../stores/store';
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;"> التقدم :</p>
               <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.progress" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            <div class="d-flex">
+              <p class="mt-5 ml-2" style="font-weight: bold;"><strong>الحالة :</strong></p>
+              <v-select v-model="tableStore.newSubject.state" :items="statesType" item-title="arName" item-value="value" variant="underlined"></v-select>
+            </div>
+
+            <div class="d-flex">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> التعليقات :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.description" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
             <div >
