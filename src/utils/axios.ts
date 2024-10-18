@@ -1,7 +1,5 @@
 import axios from 'axios'
-import { useToast } from 'vue-toastification'
 
-const toast = useToast()
 export const baseURL = 'https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io/'
 const axiosIns = axios.create({
     baseURL: `${baseURL}api/`,
