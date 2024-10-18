@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-  import { getEnumByValue,statesType } from '../types/EnumDto';
+import { getEnumByValue,statesType } from '../types/EnumDto';
 import { useTableStore } from '../stores/store';
 
   const tableStore = useTableStore()

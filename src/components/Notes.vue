@@ -8,12 +8,6 @@ onMounted(async () => {
     await reportStore.FetchReports()
   
 }) 
-const toast = useToast()
-
-
-const test = () => {
-toast.success("working")
-}
 </script>
 
 <template>
@@ -22,8 +16,6 @@ toast.success("working")
         <div class="elevation-13 pa-4" style="min-width: 35%; overflow-y:scroll ; scrollbar-width: none; ">
             
             <div class="d-flex justify-space-between" >
-                
-                <v-btn @click="test" elevation="4" rounded="lg" size="x-large" class="bg-white"> <v-icon :size="35" icon="mdi-pencil-box-outline"></v-icon></v-btn>
                 <v-btn @click="reportStore.reportsDialog = true , reportStore.file = []" elevation="4" rounded="lg" size="x-large" class="bg-white"> <v-icon icon="mdi-plus-circle-outline"></v-icon> <span style="font-weight: bold;">تبليغ</span></v-btn>
             </div>
 
