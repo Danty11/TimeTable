@@ -213,6 +213,7 @@ import { useTableStore } from '../stores/store';
               <div v-if="!tableStore.startEdit">
                 <div class="d-flex">
                   <div v-for="pdf in tableStore.file">
+                    <div style="display: none">{{ pdf }}</div>
                   <v-icon @click="tableStore.removePdfInEdit()" v-if="!tableStore.startEdit " style="position: relative;" class="pb-5 pr-3" size="small" variant="text" icon="mdi-close-circle-outline"></v-icon>
                   <v-icon size="large" icon="mdi-file-powerpoint"></v-icon>
                 </div>
