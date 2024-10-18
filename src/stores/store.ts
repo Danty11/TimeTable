@@ -64,6 +64,7 @@ export const useTableStore = defineStore('table-store',() => {
         await FetchTable()
          if(res.status == 200)
             toast.success("تمت الاضافة بنجاح")
+        newSubject.value = {} as NewSubject
          newSubjectDialog.value = false
          loading.value = false
 }
