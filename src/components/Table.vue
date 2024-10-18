@@ -121,7 +121,7 @@ import { useTableStore } from '../stores/store';
                       </div>
                     </div>
                   </td>
-                  <td v-else class="class-item" @click="tableStore.newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
+                  <td v-else class="class-item" @click="tableStore.newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;  height: 100px;" ></td>
                 </template>
               </tr>
             </tbody>
