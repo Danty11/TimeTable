@@ -33,4 +33,12 @@ export interface Root {
     creationDate: string
   }
   
+  export interface AddReport {
+    title: string
+    description: string
+    attachment: string[]
+    mainAttachment: string
+  }
+  
+  
   

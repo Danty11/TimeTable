@@ -1,9 +1,13 @@
 import { defineStore } from "pinia";
 import axios from "../utils/axios";
 import { NewSubject, Table } from "../types/type";
-import { report, singleSubject } from "../types/reportsType";
+import { AddReport, report, singleSubject } from "../types/reportsType";
+import { useToast } from "vue-toastification";
+
+const toast = useToast()
 
 export const useTableStore = defineStore('table-store',() => {
+    const file = ref<File[]>([])
     const TableData = ref<Table[]>([])
     const ReportsData = ref<report[]>([])
     const newSubject = ref<NewSubject>({} as NewSubject)
@@ -11,14 +15,16 @@ export const useTableStore = defineStore('table-store',() => {
     const dialog = ref(false)
     const newSubjectDialog = ref(false)
     const startEdit = ref(true)
+    const image = new FormData()
+    const pdf = new FormData()
     const singleSubject = ref<singleSubject>({} as singleSubject)
-   
-    const report =ref({
-        title: "",
-        description: "",
-        attachment: [] ,
-        mainAttachment: ""
-    })
+    const reportsDialog = ref(false)
+    const report =ref<AddReport>({} as AddReport)
+    const editTable = ref(false)
+    const fileAdded = ref(false)
+    const loading = ref(false)
+    const deleteLoading = ref(false)
+ 
 
     
     const EditMaterial = ref({
@@ -45,45 +51,53 @@ export const useTableStore = defineStore('table-store',() => {
         }
     }
 
-    const fetchSingleSubject = async(id:number ) => {
-        try{
-            const res = await axios.get(`studymaterial/${id}` )
-            singleSubject.value = res.data
-            console.log(singleSubject.value)
-        }
-        catch (error) {
-            console.log('error fetching data',error)
-        }
-    }
+    
+
     const addNewSubject = async () => {
+        loading.value = true
+        if(file.value.length != 0)
+            await newSubjectsendPdf()
+
         const res = await axios.post("studymaterial" , newSubject.value)
-         await FetchTable()
+        
+        await FetchTable()
          if(res.status == 200)
-            alert("تمت العملية بنجاح")
+            toast.success("تمت الاضافة بنجاح")
          newSubjectDialog.value = false
+         loading.value = false
 
     }
+
     const Editlesson = async (data:any) => {
         try {
+           loading.value = true
+            if(file.value.length != 0)
+                await sendPdf()
+
             const res = await axios.put(`studymaterial/${data.id}`,data)
            await FetchTable()
+           
+
            if(res.status == 200)
-            alert("تمت العملية بنجاح")
+            toast.success("تم التعديل بنجاح")
            startEdit.value = true
            dialog.value = false
+           loading.value = false
         } catch (error) {
             console.log(error,'error editing data')
         }
     }
 
     const removeSubject = async(id: any) => {
+        loading.value = true
        const res = await axios.delete(`studymaterial/${id}`)
         await FetchTable()
         if(res.status == 200)
-            alert("تمت العملية بنجاح")
+            toast.success("تمت الحذف بنجاح")
 
         startEdit.value = true
            dialog.value = false
+           loading.value = false
 
     }
 
@@ -97,27 +111,106 @@ export const useTableStore = defineStore('table-store',() => {
         }
     }
 
-    const AddReport = () =>{
-        try {
-             axios.post('reports',report)
-            
-            
-        } catch (error) {
-            console.log('error sending data',error)
-        }
-    }
     
     const deleteReport = async (id:any) => {
+        deleteLoading.value = true
        const res = await axios.delete(`reports/${id}`)
         await FetchReports()
         if(res.status == 200)
-            alert("تمت العملية بنجاح")
+            toast.success("تم الحذف بنجاح")
+        deleteLoading.value = false
+    }
+
+    const handleFile = async (event: any) => {
+
+       
+        console.log(event.target.files)
+        file.value = event.target.files 
+        fileAdded.value = true
+        
+        
+}
+    const deletePdf = (index: number) =>
+    {
+        singleSubject.value.attachment.splice(index ,1)
+    }
+
+    const removePdfInEdit = () =>
+        {
+            file.value = []
+            fileAdded.value = false
+        }
+
+const handleimg = async (event: any) => {
+
+       
+    file.value = event.target.files 
+    console.log(file.value)
+   
+   
+}
+
+    const sendReportImage = async() => {
+
+        image.append("files", file.value[0])
+        const res = await axios.post( "file/multi" , image)
+        report.value.mainAttachment = res.data[0].url
+        file.value = []
+        
+    }
+    const sendPdf = async() => {
+      
+        for(var i = 0 ; i <file.value.length ; i++)
+            {
+                pdf.append("files", file.value[i])   
+            }
+        const res = await axios.post( "file/multi" , pdf)
+       
+            singleSubject.value.attachment[0] = res.data[0].url
+    
+            file.value = []
+    }
+
+    const newSubjectsendPdf = async() => {
+      
+        for(var i = 0 ; i <file.value.length ; i++)
+            {
+                pdf.append("files", file.value[i])   
+            }
+        const res = await axios.post( "file/multi" , pdf)
+            
+        newSubject.value.attachment = []
+            newSubject.value.attachment[0] = res.data[0].url
+    
+            file.value = []
+    }
+
+    const addReport = async() => {
+
+        loading.value = true
+        if(file.value.length != 0)
+            { 
+                await sendReportImage()
+            }
+        
+      const res =  await axios.post("reports" , report.value)
+
+       await FetchReports()
+       if(res.status == 200)
+       {
+        toast.success("تمت العملية بنجاح")
+       }
+       reportsDialog.value = false
+        loading.value = false
+        report.value = {} as AddReport
     }
 
 
 
     return{
         TableData,
+        file,
+        loading,
         ReportsData,
         report,
         EditMaterial,
@@ -127,13 +220,20 @@ export const useTableStore = defineStore('table-store',() => {
         dialog,
         startEdit,
         newSubjectDialog,
+        reportsDialog,
+        editTable,
+        deleteLoading,
+        fileAdded,
         Editlesson,
-        fetchSingleSubject,
-        AddReport,
         FetchReports,
         FetchTable,
         addNewSubject,
         removeSubject,
         deleteReport,
+        handleFile,
+        addReport,
+        handleimg,
+        deletePdf,
+        removePdfInEdit,
     }
 })

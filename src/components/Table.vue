@@ -7,6 +7,9 @@ import { useTableStore } from '../stores/store';
 
   tableStore.FetchTable()
 
+  const download = (link: any) => {
+    window.open(`https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io/${link}`)
+  }
   const days = [
     {
       day:'الاحد',
@@ -31,16 +34,18 @@ import { useTableStore } from '../stores/store';
   ]
 
   const openDialog = async (data: any) => {
-    await tableStore.fetchSingleSubject(data)
+    tableStore.singleSubject = data
     tableStore.dialog = true;
+    tableStore.file = []
   };
 
 </script>
 
 <template>
 
-  <div class=" d-flex justify-center " style="width: 100%; height: fit-content">
-          <v-table class="bg-white rounded-xl  elevation-13" style="border: 1px black solid">
+  <div class=" d-flex justify-center py-4 mr-4 mt-12" style="width: 100%; height: fit-content">
+   
+          <v-table class="bg-white rounded-xl  elevation-13" style="border: 1px black solid; width: 90%;">
             <thead class="">
               <tr>
                 <th style="border-right: 1.5px black solid; border-bottom: 1.5px black solid;"></th>
@@ -69,10 +74,16 @@ import { useTableStore } from '../stores/store';
                   </div>
                 </th>
                 <th style="border-bottom: 1.5px black solid;border-left: 1px black solid;">
-                  <div class="d-flex flex-column align-center">
-                    <span class="text-h6 font-weight-bold">5</span>
+                
+                 
+                  <div class="d-flex flex-column align-center" >
+                
+                    <span  class="text-h6 font-weight-bold">5</span>
                     <span class="text-caption text-no-wrap">6:00-8:00</span>
+                  
                   </div>
+                  
+                  
                 </th>
               </tr>
             </thead>
@@ -85,23 +96,24 @@ import { useTableStore } from '../stores/store';
                 </td>
                 <template v-for="( data, index) in day.studyMaterials" :key="index">
                   <td
-                  dir="rtl"
-                    style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%; max-height: 81px; max-width: 180px"
+                 
+                    style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%; min-height: 250px; max-height: 81px; max-width: 140px"
                     v-if="data.materialName"
                     class="class-item"
                     :style="{ backgroundColor: data.color }"
-                    @click="openDialog(data.id)"
+                    @click="openDialog(data)"
                   >
-                    <div class=" d-flex flex-column justify-space-between" style="height: 100%;">
+                 
+                    <div  dir="rtl" class=" d-flex flex-column justify-space-between" style="height: 100%;">
                       <div></div>
                       <div class="position-absolute" v-if="data.state == 0"></div>
-                      <div v-else class="position-absolute">
-                        <v-chip size="x-small" :color="`${getEnumByValue(statesType,data.state).color}`" variant="tonal">
+                      <div class="" v-else >
+                        <v-chip class="position-absolute" size="x-small" variant="flat" :color="`${getEnumByValue(statesType,data.state).color}`">
                           {{ getEnumByValue(statesType,data.state).name }}
                         </v-chip>
                       </div>
                       <div class="d-flex justify-center">
-                        <p class="text-center font-weight-bold mt-auto" style=" max-width: 80% ; font-size: 20px;">{{ data.materialName }}</p>
+                        <p class="text-center font-weight-bold mt-auto pr-2" style=" max-width: 80% ; min-height: 80px; font-size: 20px;">{{ data.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
                         <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
@@ -109,21 +121,21 @@ import { useTableStore } from '../stores/store';
                       </div>
                     </div>
                   </td>
-                  <td v-else class="class-item " @click="tableStore.newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
+                  <td v-else class="class-item" @click="tableStore.newSubjectDialog = true , tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;" ></td>
                 </template>
               </tr>
             </tbody>
-          </v-table>
-
-          
+          </v-table> 
+       
     <div>
+
       <!-- edit subject  dialog -->
       <v-dialog v-model="tableStore.dialog" max-width="500px" class="rounded-xl">
         <v-card class="rounded-lg" style="background-color: white; color: black;">
-          <div class="d-flex justify-space-between">
-            
+
+          <div v-if="tableStore.startEdit" class="d-flex justify-space-between">
             <v-card-actions>
-              <v-btn color="primary" @click="tableStore.dialog = false">
+              <v-btn color="primary" @click="tableStore.dialog = false , tableStore.file = []">
                 <v-icon
                   color="blue-grey"
                   icon="mdi-close"
@@ -134,6 +146,7 @@ import { useTableStore } from '../stores/store';
             <v-card-title>
               <span class="text-h5"> {{ tableStore.singleSubject.materialName }} </span>
             </v-card-title>
+          
 
             <v-card-actions>
               <v-btn
@@ -149,9 +162,32 @@ import { useTableStore } from '../stores/store';
             
             </v-card-actions>
           </div>
+
+          <div v-else class="d-flex justify-space-between">
+            <v-card-actions>
+              <v-btn color="primary" @click="tableStore.startEdit = true">
+                <v-icon
+                  color="blue-grey"
+                  icon="mdi-close"
+                  size="large"
+                ></v-icon>
+              </v-btn>
+            </v-card-actions>
+            <v-card-title>
+              <span class="text-h5"> تعديل </span>
+            </v-card-title>
+        
+          </div>
+
+
           <v-card-text dir="rtl" class="d-flex flex-column">
 
-            <div class="d-flex ">
+            <div class="d-flex" v-if="!tableStore.startEdit">
+              <p class="mt-5 ml-2" style="font-weight: bold;">اسم المادة :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.singleSubject.materialName" dir="rtl" variant="underlined" class="text-h5"></v-text-field>
+            </div>
+
+            <div class="d-flex">
               <p class="mt-5 ml-2" style="font-weight: bold;">اسم التدريسي :</p>
               <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.doctorName" dir="rtl" variant="underlined"></v-text-field>
             </div>
@@ -161,10 +197,34 @@ import { useTableStore } from '../stores/store';
               <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
-            
             <div class="d-flex ">
               <p class="mt-5 ml-2" style="font-weight: bold;"> التقدم :</p>
               <v-text-field :disabled="tableStore.startEdit" style="font-weight: bold;" v-model="tableStore.singleSubject.progress" dir="rtl" variant="underlined"></v-text-field>
+            </div>
+
+            
+            <div class="d-flex ">
+              <p class=" ml-2" style="font-weight: bold;"> الملازم :</p>
+              <div v-for="pdf,index in tableStore.singleSubject.attachment">
+                <v-icon @click="tableStore.deletePdf(index)" v-if="!tableStore.startEdit" style="position: relative;" class="pb-5 pr-3" size="small" variant="text" icon="mdi-close-circle-outline"></v-icon>
+                <v-icon size="large" @click="download(pdf)" icon="mdi-file-powerpoint"></v-icon>   
+             </div>
+
+              <div v-if="!tableStore.startEdit">
+                <div class="d-flex">
+                  <div v-for="pdf in tableStore.file">
+                  <v-icon @click="tableStore.removePdfInEdit()" v-if="!tableStore.startEdit " style="position: relative;" class="pb-5 pr-3" size="small" variant="text" icon="mdi-close-circle-outline"></v-icon>
+                  <v-icon size="large" icon="mdi-file-powerpoint"></v-icon>
+                </div>
+                <label v-if=" tableStore.fileAdded !=true"class="mr-2" for="upload" style="cursor: pointer;">
+              <v-icon size="large" icon="mdi-file-plus"></v-icon>
+            </label>
+                </div>
+           
+              
+            </div>
+             
+              <v-file-input multiple type="file" accept=".pdf" id="upload" style="display: none;" @change="tableStore.handleFile"></v-file-input>
             </div>
 
             <div v-if="tableStore.startEdit"  class="d-flex ">
@@ -187,9 +247,20 @@ import { useTableStore } from '../stores/store';
               <p class="mt-5 ml-2" style="font-weight: bold;"><strong>اليوم :</strong></p>
               <v-select v-model="tableStore.singleSubject.dayOfWeekId" :disabled="tableStore.startEdit" :items="days" item-value="id" item-title="day" variant="underlined"></v-select>
             </div>
-            <v-color-picker v-if="!tableStore.startEdit" v-model="tableStore.singleSubject.color" :modes="['hex']" hide-inputs></v-color-picker>
-            <v-btn v-if="!tableStore.startEdit" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
-            <v-btn v-if="!tableStore.startEdit" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
+
+            <v-expansion-panels v-if="!tableStore.startEdit" elevation="0" style="background-color: white; border: 0.5px gray solid">
+              <v-expansion-panel style="background-color: white; color: black;" >
+                <v-expansion-panel-title> <span style="font-size: larger;">اختار اللون :</span> </v-expansion-panel-title>
+                <v-expansion-panel-text>
+                  <v-color-picker  v-model="tableStore.singleSubject.color" :modes="['hex']" hide-inputs></v-color-picker>
+                </v-expansion-panel-text>
+
+              </v-expansion-panel>
+            </v-expansion-panels>
+            
+            
+            <v-btn v-if="!tableStore.startEdit" :loading="tableStore.loading" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
+            <v-btn v-if="!tableStore.startEdit" :loading="tableStore.loading" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>
@@ -232,9 +303,39 @@ import { useTableStore } from '../stores/store';
               <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.studyHall" dir="rtl" variant="underlined"></v-text-field>
             </div>
 
-            <v-color-picker v-model="tableStore.newSubject.color" :modes="['hex']" hide-inputs></v-color-picker>
+            <div class="d-flex ">
+              <p class="mt-5 ml-2" style="font-weight: bold;"> التقدم :</p>
+              <v-text-field style="font-weight: bold;" v-model="tableStore.newSubject.progress" dir="rtl" variant="underlined"></v-text-field>
+            </div>
 
-            <v-btn @click="tableStore.addNewSubject()" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
+            <div >
+                <div class="d-flex mb-4">
+                  <p style="font-weight: bold;">الملازم:</p>
+                  <div v-for="pdf in tableStore.file">
+                  <v-icon @click="tableStore.removePdfInEdit()"  style="position: relative;" class="pb-5 pr-3" size="small" variant="text" icon="mdi-close-circle-outline"></v-icon>
+                  <v-icon size="large" icon="mdi-file-powerpoint"></v-icon>
+                </div>
+                <label class="mr-2" for="upload" style="cursor: pointer;">
+              <v-icon size="large" icon="mdi-file-plus"></v-icon>
+            </label>
+                </div>
+           
+              
+            </div>
+             
+              <v-file-input multiple type="file" accept=".pdf" id="upload" style="display: none;" @change="tableStore.handleFile"></v-file-input>
+
+                <v-expansion-panels elevation="0" style="background-color: white; border: 0.5px gray solid">
+              <v-expansion-panel style="background-color: white; color: black;" >
+                <v-expansion-panel-title> <span style="font-size: larger;">اختار اللون :</span> </v-expansion-panel-title>
+                <v-expansion-panel-text>
+                  <v-color-picker  v-model="tableStore.newSubject.color" :modes="['hex']" hide-inputs></v-color-picker>
+                </v-expansion-panel-text>
+
+              </v-expansion-panel>
+            </v-expansion-panels>
+
+            <v-btn  @click="tableStore.addNewSubject()"  :loading="tableStore.loading" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">اضافة</v-btn>
           </v-card-text>
         </v-card>
       </v-dialog>

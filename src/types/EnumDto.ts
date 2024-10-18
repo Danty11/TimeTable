@@ -18,19 +18,19 @@ const statesType : AppEnumGroup = [
     {
         name: "",
         value: 0,
-        color: 'warning',
+        color: 'red',
         arName: 'لا يوجد'
     },
     {
         name: "Q",
         value: 1,
-        color: 'warning',
+        color: 'red',
         arName: 'كوز'
     },
     {
         name: "H",
         value: 2,
-        color: 'warning',
+        color: 'primary',
         arName: 'واجب'
     },{
         name: "M",
