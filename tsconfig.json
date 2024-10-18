@@ -3,7 +3,7 @@
     "target": "ESNext",
     "jsx": "preserve",
     "lib": ["DOM", "ESNext"],
-    "baseUrl": ".",
+    "baseUrl": "https://time-table-nu.vercel.app/",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "paths": {

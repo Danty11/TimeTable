@@ -325,7 +325,7 @@ import { useTableStore } from '../stores/store';
               
             </div>
              
-              <v-file-input multiple type="file" accept=".pdf" id="upload" style="display: none;" @change="tableStore.handleFile"></v-file-input>
+              <v-file-input type="file" accept=".pdf" id="upload" style="display: none;" @change="tableStore.handleFile"></v-file-input>
 
                 <v-expansion-panels elevation="0" style="background-color: white; border: 0.5px gray solid">
               <v-expansion-panel style="background-color: white; color: black;" >
