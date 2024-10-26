@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import axios from 'axios';
+import { useToast } from 'vue-toastification';
 
 const visible = ref(false)
+const toast = useToast()
 const form = ref(false)
 const loading = ref(false)
 const info = ref({
@@ -16,18 +18,22 @@ const required = (v:any) => {
       }
 
 const onSubmit = async() => {
-    try{   const res = await axios.post('https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io/api/auth/login' , {
+    try{   
+      loading.value = true
+      const res = await axios.post('https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io/api/auth/login' , {
         email: info.value.email,
         password: info.value.password
     })
-    console.log(res)
+   
 
     localStorage.setItem('accessToken', res.data.token)
+    loading.value = false
    window.location.assign("/")
 }
 
    catch (error){
-    alert('خطاء في المعلومات')
+    toast.error('خطاء في المعلومات')
+    loading.value = false
    }
 }
 
