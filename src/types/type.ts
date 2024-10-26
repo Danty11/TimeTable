@@ -45,3 +45,10 @@ export interface Root {
     numberToOrder: number
     attachment: string[]
   }
+
+  export interface EditReportInfo {
+    title: string
+    description: string
+    mainAttachment: string
+    attachment: string[]
+  }

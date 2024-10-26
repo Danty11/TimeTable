@@ -2,7 +2,10 @@
 import Table from '@/components/Table.vue';
 import Notes from '@/components/Notes.vue';
 
-
+onMounted(() => {
+  if(!localStorage.getItem('accessToken'))
+  window.location.assign("/login")
+})
 
 const height = ref(window.innerHeight) 
 </script>

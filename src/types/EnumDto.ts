@@ -30,7 +30,7 @@ const statesType : AppEnumGroup = [
     {
         name: "H",
         value: 2,
-        color: 'primary',
+        color: 'warning',
         arName: 'واجب'
     },{
         name: "M",

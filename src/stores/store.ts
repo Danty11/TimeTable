@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import axios from "../utils/axios";
-import { NewSubject, Table } from "../types/type";
+import { EditReportInfo, NewSubject, Table } from "../types/type";
 import { AddReport, report, singleSubject } from "../types/reportsType";
 import { useToast } from "vue-toastification";
 
@@ -24,6 +24,12 @@ export const useTableStore = defineStore('table-store',() => {
     const fileAdded = ref(false)
     const loading = ref(false)
     const deleteLoading = ref(false)
+    const editReportInfo = ref<EditReportInfo>({} as EditReportInfo)
+    const editReportDialog = ref(false)
+
+    const removeNoteDialog = ref(false)
+
+    const reportId = ref(0)
  
 
     
@@ -52,7 +58,6 @@ export const useTableStore = defineStore('table-store',() => {
     }
 
     
-
     const addNewSubject = async () => {
         try{
         loading.value = true
@@ -133,18 +138,20 @@ catch(error){
     }
 
     
-    const deleteReport = async (id:any) => {
+    const deleteReport = async () => {
         try{
-        deleteLoading.value = true
-       const res = await axios.delete(`reports/${id}`)
+        loading.value = true
+       const res = await axios.delete(`reports/${reportId.value}`)
         await FetchReports()
         if(res.status == 200)
             toast.success("تم الحذف بنجاح")
-        deleteLoading.value = false
+        loading.value = false
+        removeNoteDialog.value = false
 }
 catch(error)
 {
-    deleteLoading.value = false
+    loading.value = false
+    removeNoteDialog.value = false
     toast.warning('حدث خطاء ما')
 }
         
@@ -220,10 +227,18 @@ try{
 
 
         loading.value = true
+
+        if(!report.value.description || !report.value.title)
+        {
+            toast.warning("العنوان و الوصف ميصير فارغ")
+            loading.value = false
+            return
+        }
         if(file.value.length != 0)
             { 
                 await sendReportImage()
             }
+        
         
       const res =  await axios.post("reports" , report.value)
 
@@ -247,6 +262,27 @@ try{
     }
     }
 
+    const editReport = async() => {
+        try{
+            loading.value = true
+            const res =  await axios.put("reports/" + reportId.value , editReportInfo.value )
+            await FetchReports()
+
+            if(res.status == 200)
+            {
+             toast.success("تمت العملية بنجاح")
+             editReportDialog.value = false
+             loading.value = false
+            }
+        }
+        catch(error){
+            toast.warning("حدث خطاء ما")
+            editReportDialog.value = false
+            loading.value = false
+           
+        }
+    } 
+
 
 
     return{
@@ -266,6 +302,10 @@ try{
         editTable,
         deleteLoading,
         fileAdded,
+        editReportInfo,
+        editReportDialog,
+        reportId,
+        removeNoteDialog,
         Editlesson,
         FetchReports,
         FetchTable,
@@ -277,5 +317,6 @@ try{
         handleimg,
         deletePdf,
         removePdfInEdit,
+        editReport,
     }
 })

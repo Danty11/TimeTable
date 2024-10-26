@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import axios from 'axios';
 
+const visible = ref(false)
 const form = ref(false)
 const loading = ref(false)
 const info = ref({
     email: '',
     password: ''
 })
+
+const height = ref(window.innerHeight) 
 
 const required = (v:any) => {
         return !!v || 'Field is required'
@@ -31,45 +34,69 @@ const onSubmit = async() => {
 </script>
 
 <template>
-    <v-sheet class="bg-white pa-12" style="height: 100%;" rounded>
-      <v-card class="mx-auto px-6 py-8 bg-white elevation-12" max-width="344">
+  <div dir="rtl"class="d-flex" style="height: 100%;">
+  <div class="d-flex justify-center align-center " :style="`background-color:#90B7FF; width:100%; height: ${height};`">
+    <div style="margin-bottom: 180px;">
+    <img src="../assets/logo.png" style="height: 387px; width:400px;" class="">
+    <p class="text-center" style="font-size: 48px; font-weight: bolder; color: #e9f1ff">جدول الامن السيبراني</p>
+  </div>
+  </div>
+
+  <div class=" align-center elevation-4" :style="`width: 40%; height:  ${height} ; background-color: #F7F7F7;`">
+  
+    <div class="" style="height: 100px;"></div>
+    <p class="text-center mt-16 mb-10" style="font-size: 50px; color: black;">تسجيل الدخول</p>
+      <v-card class="mx-auto px-6 py-8 elevation-0" style="background-color: #F7F7F7;" max-width="450">
         <v-form
           v-model="form"
           @submit.prevent="onSubmit"
         >
-        <p class="text-center mb-4" style="font-size: larger;">Login</p>
+       
           <v-text-field
             v-model="info.email"
             :readonly="loading"
             :rules="[required]"
-            class="mb-2"
-            label="Email"
+            dir="rtl"
+            class="mb-5"
+            placeholder="البريد الاكتروني"
             clearable
+            variant="outlined"
+            style="color: black;"
+            
           ></v-text-field>
   
           <v-text-field
             v-model="info.password"
             :readonly="loading"
             :rules="[required]"
-            label="Password"
-            placeholder="Enter your password"
+            placeholder="الرمز"
             clearable
+            :prepend-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+            :type="visible ? 'text' : 'password'"
+            dir="rtl"
+            variant="outlined"
+             @click:prepend-inner="visible = !visible"
+            style="color: black;"
           ></v-text-field>
   
           <br>
   
           <v-btn
-            :disabled="!form"
+            
             :loading="loading"
-            color="success"
-            size="large"
+            style="background: rgb(103,135,194); background: linear-gradient(90deg, rgba(103,135,194,1) 0%, rgba(144,183,255,1) 100%);"
+            :size="60"
             type="submit"
             variant="elevated"
             block
           >
-            Sign In
+            <span style="font-size: 20px;">تسجيل الدخول</span> 
           </v-btn>
         </v-form>
       </v-card>
-    </v-sheet>
+   
+  </div>
+</div>
   </template>
+
+  <style></style>
