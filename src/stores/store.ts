@@ -132,6 +132,7 @@ catch(error){
             const res = await axios.get('reports')
             ReportsData.value = res.data.data     
             fetchComplete.value = true
+            console.log(ReportsData.value)
         } catch (error) {
             console.log('error fetching data',error)
         }

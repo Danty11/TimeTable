@@ -9,6 +9,10 @@ onMounted(async () => {
   
 }) 
 
+const formatLineBreak = (str) => {
+  return str.replace(/\n/g, '<br>');
+ 
+}
 
 const required = (v) => {
         return !!v || 'Field is required'
@@ -70,7 +74,7 @@ const required = (v) => {
                         
                         <div class="d-flex flex-column mr-4" style="max-height: 125px;">
                             <p style="font-size: larger; font-weight: bold;">{{ note.title }}</p>
-                            <p style="overflow-y: hidden;">{{ note.description }}</p>
+                            <p v-html="formatLineBreak(note.description)" style="overflow-y: scroll; scrollbar-width: none;"></p>
                         </div>
                     </div>
                     
@@ -86,8 +90,8 @@ const required = (v) => {
                 </div>
             </div>
 
-            <!-- add report -->
-            <v-dialog
+    <!-- add report -->
+    <v-dialog
       v-model="reportStore.reportsDialog"
       width="auto"
     >
@@ -125,7 +129,7 @@ const required = (v) => {
 
             <div style="height: 170px;">
                 <p style="font-size: large;" class="mr-1">الوصف</p>
-                <v-text-field :rules="[required]" v-model="reportStore.report.description" dir="rtl" variant="outlined" style="height:100% "></v-text-field>
+                <v-textarea shaped rows="3"  variant="outlined" :rules="[required]" v-model="reportStore.report.description" dir="rtl" style="height:100% "></v-textarea>
             </div>
 
             <div >
@@ -179,7 +183,7 @@ const required = (v) => {
 
             <div style="height: 170px;">
                 <p style="font-size: 19px;" class="mr-1">الوصف</p>
-                <v-text-field :rules="[required]" v-model="reportStore.editReportInfo.description" dir="rtl" variant="outlined" style="height:100% "></v-text-field>
+                <v-textarea shaped rows="3" :rules="[required]" v-model="reportStore.editReportInfo.description" dir="rtl" variant="outlined" style="height:100%;"></v-textarea>
             </div>
 
         </div>
@@ -255,4 +259,5 @@ const required = (v) => {
 .hover-red:hover {
   color: red; /* Change the color on hover */
 }
+
 </style>
