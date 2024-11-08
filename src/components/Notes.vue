@@ -3,6 +3,7 @@ import { useToast } from 'vue-toastification';
 import { useTableStore } from '../stores/store';
 
 const reportStore = useTableStore()
+const index = ref(0)
 
 onMounted(async () => {
     await reportStore.FetchReports()
@@ -18,7 +19,12 @@ const required = (v) => {
         return !!v || 'Field is required'
       }
 
-
+watch(() => reportStore.editReportDialog ,(newValue) => 
+  {
+    if(newValue == false)
+      index.value = 0
+  }
+)
 
       function timeSince(date) {
         date = new Date(date)
@@ -61,6 +67,22 @@ const required = (v) => {
   return `منذ ${Math.floor(seconds)} ثواني `;
 }
 
+const changeIndex = (i) => {
+  console.log(index.value)
+  if(index.value == reportStore.editReportInfo.attachment.length )
+      {index.value = 0
+        console.log("-")
+      }
+
+    
+
+  if(index.value == -1)
+     {index.value = reportStore.editReportInfo.attachment.length -1
+      console.log("+")
+     }
+
+}
+
 </script>
 
 <template>
@@ -74,7 +96,7 @@ const required = (v) => {
 
             <div v-for="note in reportStore.ReportsData" dir="rtl" style="color: black;" class="mt-4">
                 <div class="d-flex justify-space-between elevation-6 pa-2 rounded-">
-                    <div  @click="reportStore.editReportInfo = note , reportStore.reportId = note.id ,reportStore.editReportDialog = true " class="d-flex">
+                    <div  @click="reportStore.editReportInfo = note , reportStore.reportId = note.id ,reportStore.editReportDialog = true, console.log(reportStore.editReportInfo.attachment)" class="d-flex">
                         <img v-if="note.mainAttachment" :src="`https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io//${note.mainAttachment}`" class="rounded-lg" style="max-width: 150px; max-height: 120px; min-height: 120px; background-color: aqua; object-fit: cover;"> 
                         <div v-else class="rounded-lg" style="min-width: 150px; height: 120px; background-color: #8A2BE2;"> </div>
                         
@@ -169,7 +191,7 @@ const required = (v) => {
            
              
                 
-            <v-btn style="background-color: white;" variant="none" @click="reportStore.editReportDialog = false">
+            <v-btn style="background-color: white;" variant="none" @click="reportStore.editReportDialog = false , index = 0">
                 <v-icon
                   color="black"
                   icon="mdi-close"
@@ -182,6 +204,16 @@ const required = (v) => {
 
 
         <div class="mt-4">
+          <div class="d-flex" v-if="reportStore.editReportInfo.attachment.length > 0 || reportStore.editReportInfo.mainAttachment" >
+            <v-btn v-if="reportStore.editReportInfo.attachment.length >= 1" variant="outlined" class="my-auto" icon="mdi-menu-right" @click="changeIndex(index--)"></v-btn>
+            <div class="d-flex justify-center mx-4" style="width: 100%; height: 180px;">
+              <img v-if="reportStore.editReportInfo.attachment.length > 0" :src="`https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io//${reportStore.editReportInfo.attachment[index]}`" class="rounded-lg" style="max-width: 300px; max-height: 250px; min-height: 120px; background-color: aqua; object-fit: cover;"> 
+              <img v-if="reportStore.editReportInfo.attachment.length == 0 " :src="`https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io//${reportStore.editReportInfo.mainAttachment}`" class="rounded-lg" style="max-width: 300px; max-height: 250px; min-height: 120px; background-color: aqua; object-fit: cover;"> 
+              
+            </div>
+            <v-btn v-if="reportStore.editReportInfo.attachment.length >= 1" class="my-auto" variant="outlined" icon="mdi-menu-left" @click="changeIndex(index++)"></v-btn>
+             
+          </div>
             <div>
                 <p style="font-size: 19px;" class="mr-1">العنوان</p>
                 <v-text-field :rules="[required]" v-model="reportStore.editReportInfo.title" dir="rtl" variant="outlined"></v-text-field>
