@@ -189,13 +189,24 @@ const handleimg = async (event: any) => {
 }
 
     const sendReportImage = async() => {
-
-        image.append("files", file.value[0])
+        Array.from(file.value).forEach(file => image.append("files", file))
+        // image.append("files[]", file.value)
+        
         console.log(image.get("files"))
         const res = await axios.post( "file/multi" , image)
+        console.log(res.data)
+        report.value.attachment = []
+      
+        res.data.forEach((e: any) => {
+            console.log(e.url)
+            report.value.attachment.push(e.url)
+            console.log(report.value.attachment)
+        });
+        
         report.value.mainAttachment = res.data[0].url
         file.value = []
         image.delete("files")
+      
     }
     const sendPdf = async() => {
     
@@ -257,6 +268,7 @@ try{
     catch(error)
     {
         toast.warning("حدث خطاء ما")
+        console.log(error)
         reportsDialog.value = false
         loading.value = false
         report.value = {} as AddReport

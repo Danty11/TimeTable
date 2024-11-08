@@ -7,14 +7,19 @@ onMounted(() => {
   window.location.assign("/login")
 })
 
-const height = ref(window.innerHeight) 
+
+  const height = ref(window.innerHeight) 
+
+
 </script>
 
 <template>
-  <div class="d-flex" :style="`width: 100%; height: ${height}px;`">
+  <div class="d-flex"  :style="`width: 100%; height: 1000px;` ">
    
-    <Notes class="mr-12"/>
-    <Table />
+    <Notes  class="mr-12"/>
+    
+      <Table />
+   
   
   </div>
 </template>

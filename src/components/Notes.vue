@@ -41,7 +41,13 @@ const required = (v) => {
   if (interval > 2) return `منذ ${interval} ايام`;
 
   interval = Math.floor(seconds / 3600);
-  if (interval > 1) return interval + " hours ago";
+  if (interval == 1) return  `منذ ساعة واحدة`;
+
+  interval = Math.floor(seconds / 3600);
+  if (interval == 2) return `منذ ساعتان `;
+
+  interval = Math.floor(seconds / 3600);
+  if (interval > 2) return `منذ ${interval} ساعات`;
 
   interval = Math.floor(seconds / 60);
   if (interval == 1) return "منذ دقيقة واحدة";
@@ -134,7 +140,7 @@ const required = (v) => {
 
             <div >
                 <p style="font-size: large;" class="mr-1">الملحقات</p>
-                <v-file-input variant="outlined" type="file" accept="image/*" id="upload"  @change="reportStore.handleimg"></v-file-input>
+                <v-file-input variant="outlined" type="file" accept="image/*" id="upload" multiple  @change="reportStore.handleimg"></v-file-input>
                 <!-- <v-file-input v-model="reportStore.file" @change="reportStore.handleFile" accept="image/*" prepend-icon="none" dir="rtl" variant="outlined" style="height:100% "></v-file-input> -->
             </div>
        
