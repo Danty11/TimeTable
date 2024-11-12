@@ -197,13 +197,12 @@ const handleimg = async (event: any) => {
         console.log(res.data)
         report.value.attachment = []
       
-        res.data.forEach((e: any) => {
-            console.log(e.url)
-            report.value.attachment.push(e.url)
-            console.log(report.value.attachment)
-        });
+       for(var i = 0 ; i < res.data.length ; i++)
+       {
+        report.value.attachment[i] = res.data[i].url
+       }
         
-        report.value.mainAttachment = res.data[0].url
+
         file.value = []
         image.delete("files")
       
