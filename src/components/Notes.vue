@@ -157,7 +157,7 @@ const changeIndex = (i) => {
 
             <div style="height: 170px;">
                 <p style="font-size: large;" class="mr-1">الوصف</p>
-                <v-textarea shaped rows="3"  variant="outlined" :rules="[required]" v-model="reportStore.report.description" dir="rtl" style="height:100% "></v-textarea>
+                <v-textarea no-resize shaped rows="3"  variant="outlined" :rules="[required]" v-model="reportStore.report.description" dir="rtl" style="height:100% "></v-textarea>
             </div>
 
             <div >
@@ -221,7 +221,7 @@ const changeIndex = (i) => {
 
             <div style="height: 170px;">
                 <p style="font-size: 19px;" class="mr-1">الوصف</p>
-                <v-textarea shaped rows="3" :rules="[required]" v-model="reportStore.editReportInfo.description" dir="rtl" variant="outlined" style="height:100%;"></v-textarea>
+                <v-textarea no-resize shaped rows="3" :rules="[required]" v-model="reportStore.editReportInfo.description" dir="rtl" variant="outlined" style="height:100%;"></v-textarea>
             </div>
 
         </div>
