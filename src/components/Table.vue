@@ -9,7 +9,7 @@ import { NewSubject } from '@/types/type';
   tableStore.FetchTable()
 
   const download = (link: any) => {
-    window.open(`http://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io/${link}`)
+    window.open(`https://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io/${link}`)
   }
   const days = [
     {

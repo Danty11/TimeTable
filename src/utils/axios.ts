@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-export const baseURL = 'http://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io/'
+export const baseURL = 'https://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io/'
 const axiosIns = axios.create({
     baseURL: `${baseURL}api/`,
 })

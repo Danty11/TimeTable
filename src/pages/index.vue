@@ -5,7 +5,10 @@ import Notes from '@/components/Notes.vue';
 onMounted(() => {
   if(!localStorage.getItem('accessToken'))
   window.location.assign("/login")
+document.title = "Time Table"
 })
+
+
 
 
   const height = ref(window.innerHeight) 

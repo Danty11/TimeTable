@@ -20,7 +20,7 @@ const required = (v:any) => {
 const onSubmit = async() => {
     try{   
       loading.value = true
-      const res = await axios.post('https://k80sowk80c808s4cogk0woc0.158.220.126.158.sslip.io/api/auth/login' , {
+      const res = await axios.post('https://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io/api/auth/login' , {
         email: info.value.email,
         password: info.value.password
     })
