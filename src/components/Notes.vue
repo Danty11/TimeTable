@@ -97,7 +97,7 @@ const changeIndex = (i) => {
             <div v-for="note in reportStore.ReportsData" dir="rtl" style="color: black;" class="mt-4">
                 <div class="d-flex justify-space-between elevation-6 pa-2 rounded-">
                     <div  @click="reportStore.editReportInfo = note , reportStore.reportId = note.id ,reportStore.editReportDialog = true, console.log(reportStore.editReportInfo.attachment)" class="d-flex">
-                        <img v-if="note.attachment" :src="`https://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io//${note.attachment[0]}`" class="rounded-lg" style="max-width: 150px; max-height: 120px; min-height: 120px; background-color: aqua; object-fit: cover;"> 
+                        <img v-if="note.attachment.length > 0" :src="`https://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io//${note.attachment[0]}`" class="rounded-lg" style="max-width: 150px; max-height: 120px; min-height: 120px; background-color: aqua; object-fit: cover;"> 
                         <div v-else class="rounded-lg" style="min-width: 150px; height: 120px; background-color: #8A2BE2;"> </div>
                         
                         <div class="d-flex flex-column mr-4" style="max-height: 125px;">
