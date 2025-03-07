@@ -53,25 +53,25 @@ import { NewSubject } from '@/types/type';
                 <th style="border-bottom: 1.5px black solid;border-left: 1px black solid;">
                   <div class="d-flex flex-column align-center">
                     <span class="text-h6 font-weight-bold">1</span>
-                    <span class="text-caption text-no-wrap">10:00-12:00</span>
+                    <span class="text-caption text-no-wrap">8:30-10:30</span>
                   </div>
                 </th>
                 <th style="border-left: 1px black solid; border-bottom: 1.5px black solid;">
                   <div class="d-flex flex-column align-center">
                     <span class="text-h6 font-weight-bold">2</span>
-                    <span class="text-caption text-no-wrap">12:00-2:00</span>
+                    <span class="text-caption text-no-wrap">10:30-12:30</span>
                   </div>
                 </th>
                 <th style=" border-left: 1px black solid; border-bottom: 1.5px black solid;">
                   <div class="d-flex flex-column align-center">
                     <span class="text-h6 font-weight-bold">3</span>
-                    <span class="text-caption text-no-wrap">2:00-4:00</span>
+                    <span class="text-caption text-no-wrap">12:30-2:30</span>
                   </div>
                 </th>
                 <th style="border-left: 1px black solid; border-bottom: 1.5px black solid;">
                   <div class="d-flex flex-column align-center">
                     <span class="text-h6 font-weight-bold">4</span>
-                    <span class="text-caption text-no-wrap">4:00-6:00</span>
+                    <span class="text-caption text-no-wrap">2:30-4:30</span>
                   </div>
                 </th>
                 <th style="border-bottom: 1.5px black solid;border-left: 1px black solid;">
