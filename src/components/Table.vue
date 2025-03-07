@@ -80,7 +80,7 @@ import { NewSubject } from '@/types/type';
                   <div class="d-flex flex-column align-center" >
                 
                     <span  class="text-h6 font-weight-bold">5</span>
-                    <span class="text-caption text-no-wrap">6:00-8:00</span>
+                    <span class="text-caption text-no-wrap">4:30-6:30</span>
                   
                   </div>
                   
