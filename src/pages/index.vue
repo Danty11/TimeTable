@@ -1,11 +1,16 @@
-<script setup>
+<script setup lang="ts">
 import Table from '@/components/Table.vue';
 import Notes from '@/components/Notes.vue';
+import { useTableStore } from '../stores/store';
 
-onMounted(() => {
+const tableStore = useTableStore()
+
+onMounted(async() => {
   if(!localStorage.getItem('accessToken'))
   window.location.assign("/login")
 document.title = "Time Table"
+
+
 })
 
 

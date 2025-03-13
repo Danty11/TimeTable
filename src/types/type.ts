@@ -6,13 +6,21 @@ export interface Root {
   }
   
   export interface Table {
+    dayName: string
+  times: Time[]
+  numberToOrder: number
+  id: string
+  deleted: boolean
+  creationDate: string
+  }
+  
+  export interface Time {
+    time: string
+    studyMaterial: StudyMaterial
+    numberToOrder: number
     id: string
     deleted: boolean
     creationDate: string
-    modifiedDate: string
-    dayName: string
-    studyMaterials: StudyMaterial[]
-    numberToOrder: number
   }
   
   export interface StudyMaterial {
@@ -34,16 +42,17 @@ export interface Root {
   }
 
   export interface NewSubject {
-    dayOfWeekId: string
-    materialName: string
-    doctorName: string
-    studyHall: string
-    color: string
-    description: string
-    progress: string
-    state: number
-    numberToOrder: number
-    attachment: string[]
+   
+      timeId: string
+      materialName: string
+      doctorName: string
+      studyHall: string
+      color: string
+      description: string
+      progress: string
+      state: number
+      attachment: string[]
+    
   }
 
   export interface EditReportInfo {
@@ -52,3 +61,5 @@ export interface Root {
     mainAttachment: string
     attachment: string[]
   }
+  
+ 

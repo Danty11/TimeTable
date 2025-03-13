@@ -17,20 +17,15 @@ export interface Root {
   }
 
   export interface singleSubject {
-    dayOfWeek: any
-    dayOfWeekId:String
-    materialName: string
-    doctorName: string
-    studyHall: string
-    color: string
-    description: string
-    progress: string
-    state: number
-    numberToOrder: number
-    attachment: any[]
-    id: string
-    deleted: boolean
-    creationDate: string
+    timeId: string
+  materialName: string
+  doctorName: string
+  studyHall: string
+  color: string
+  description: string
+  progress: string
+  state: number
+  attachment: string[]
   }
   
   export interface AddReport {

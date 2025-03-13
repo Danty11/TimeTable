@@ -26,31 +26,31 @@ export const useTableStore = defineStore('table-store',() => {
     const deleteLoading = ref(false)
     const editReportInfo = ref<EditReportInfo>({} as EditReportInfo)
     const editReportDialog = ref(false)
-
+    const singleSubjectId = ref()
     const removeNoteDialog = ref(false)
 
     const reportId = ref(0)
  
 
     
-    const EditMaterial = ref({
-        dayOfWeekId: "",
-        materialName: "",
-        doctorName: "",
-        studyHall: "",
-        color: "",
-        description: "",
-        progress: "",
-        state: "",
-        numberToOrder: "",
-        attachment: [] 
-    })
+    // const EditMaterial = ref({
+    //     dayOfWeekId: "",
+    //     materialName: "",
+    //     doctorName: "",
+    //     studyHall: "",
+    //     color: "",
+    //     description: "",
+    //     progress: "",
+    //     state: "",
+    //     numberToOrder: "",
+    //     attachment: [] 
+    // })
 
     const FetchTable = async () => {
         try {
-            const res = await axios.get('dayofweek_table')
+            const res = await axios.get('dayofweek_table/with-times')
             TableData.value = res.data
-            console.log(TableData.value)
+           await console.log(TableData.value)
           
         } catch (error) {
             console.log('error fetching data',error)
@@ -89,7 +89,7 @@ catch(error)
             if(file.value.length != 0)
                 await sendPdf()
 
-            const res = await axios.put(`studymaterial/${data.id}`,data)
+            const res = await axios.put(`studymaterial/${singleSubjectId.value}`,data)
            await FetchTable()
            
 
@@ -108,8 +108,9 @@ catch(error)
 
     const removeSubject = async(id: any) => {
         try{
+            console.log(id)
         loading.value = true
-       const res = await axios.delete(`studymaterial/${id}`)
+       const res = await axios.delete(`studymaterial/${singleSubjectId.value}`)
         await FetchTable()
         if(res.status == 200)
             toast.success("تمت الحذف بنجاح")
@@ -303,7 +304,7 @@ try{
         loading,
         ReportsData,
         report,
-        EditMaterial,
+        // EditMaterial,
         fetchComplete,
         singleSubject,
         newSubject,
@@ -318,6 +319,7 @@ try{
         editReportDialog,
         reportId,
         removeNoteDialog,
+        singleSubjectId,
         Editlesson,
         FetchReports,
         FetchTable,

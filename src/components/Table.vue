@@ -4,87 +4,68 @@ import { getEnumByValue,statesType } from '../types/EnumDto';
 import { useTableStore } from '../stores/store';
 import { NewSubject } from '@/types/type';
 
-  const tableStore = useTableStore()
+const TableLoading = ref(true)
 
-  tableStore.FetchTable()
+  const tableStore = useTableStore()
+  onMounted( async() => {
+   await tableStore.FetchTable()
+  await tableStore.TableData[0]
+  TableLoading.value =  false
+  })
+  
+
+    
+  
+  
 
   const download = (link: any) => {
     window.open(`https://mwo88k4ckooocck004o0cgk8.158.220.126.158.sslip.io/${link}`)
   }
-  const days = [
-    {
-      day:'الاحد',
-      id:'da3c96a1-9bf4-4755-a283-3696b82a8b67'
-    },
-    {
-      day:'الاثنين',
-      id:'ffc9b5d6-7410-4101-941f-d4b13c0c4e2b'
-    },
-    {
-      day:'الثلاثاء',
-      id:'8a99f63c-6975-4dbf-a72c-d37bb1f42e27'
-    },
-    {
-      day:'الاربعاء',
-      id:'18056d73-329f-49f3-a7d1-885c15692641'
-    },
-    {
-      day:'الخميس',
-      id:'32178ff1-cd65-4eda-bd10-c848442eaa1b'
-    },
-  ]
+  
 
-  const openDialog = async (data: any) => {
+
+
+  const openDialog = async (data: any, timeId: any) => {
+    console.log(data.id)
+    console.log(timeId)
+    tableStore.singleSubjectId = data.id
     tableStore.singleSubject = data
+    tableStore.singleSubject.timeId = timeId
     tableStore.dialog = true;
     tableStore.file = []
+   
   };
+
+  const HandleDrag = (data: any, timeId: any) => {
+    tableStore.singleSubjectId = data.id
+    tableStore.singleSubject = data
+    tableStore.singleSubject.timeId = timeId
+  }
+
+  const HandleDrop = async (TimeId:any) => {
+    tableStore.singleSubject.timeId = TimeId
+    TableLoading.value = true
+   await tableStore.Editlesson(tableStore.singleSubject)
+    TableLoading.value = false
+  }
 
 </script>
 
 <template>
 
   <div class=" d-flex justify-center py-4 mr-4 mt-12" style="width: 100%; height: fit-content">
+
+    <v-skeleton-loader  v-if="TableLoading" class="bg-white rounded-xl " type="table" style="width: 90%;border: 1px black solid;" color="light-blue-lighten-3"></v-skeleton-loader>
    
-          <v-table class="bg-white rounded-xl  elevation-13" style="border: 1px black solid; width: 90%;">
+          <v-table v-else class="bg-white rounded-xl  elevation-13" style="border: 1px black solid; width: 90%;">
             <thead class="">
               <tr>
                 <th style="border-right: 1.5px black solid; border-bottom: 1.5px black solid;"></th>
-                <th style="border-bottom: 1.5px black solid;border-left: 1px black solid;">
+                <th  v-for="(time,index) in tableStore.TableData[0].times" style="border-bottom: 1.5px black solid;border-left: 1px black solid;">
                   <div class="d-flex flex-column align-center">
-                    <span class="text-h6 font-weight-bold">1</span>
-                    <span class="text-caption text-no-wrap">8:30-10:30</span>
+                    <span class="text-h6 font-weight-bold">{{ index +1 }}</span>
+                    <span class="text-caption text-no-wrap">{{ time.time }}</span>
                   </div>
-                </th>
-                <th style="border-left: 1px black solid; border-bottom: 1.5px black solid;">
-                  <div class="d-flex flex-column align-center">
-                    <span class="text-h6 font-weight-bold">2</span>
-                    <span class="text-caption text-no-wrap">10:30-12:30</span>
-                  </div>
-                </th>
-                <th style=" border-left: 1px black solid; border-bottom: 1.5px black solid;">
-                  <div class="d-flex flex-column align-center">
-                    <span class="text-h6 font-weight-bold">3</span>
-                    <span class="text-caption text-no-wrap">12:30-2:30</span>
-                  </div>
-                </th>
-                <th style="border-left: 1px black solid; border-bottom: 1.5px black solid;">
-                  <div class="d-flex flex-column align-center">
-                    <span class="text-h6 font-weight-bold">4</span>
-                    <span class="text-caption text-no-wrap">2:30-4:30</span>
-                  </div>
-                </th>
-                <th style="border-bottom: 1.5px black solid;border-left: 1px black solid;">
-                
-                 
-                  <div class="d-flex flex-column align-center" >
-                
-                    <span  class="text-h6 font-weight-bold">5</span>
-                    <span class="text-caption text-no-wrap">4:30-6:30</span>
-                  
-                  </div>
-                  
-                  
                 </th>
               </tr>
             </thead>
@@ -95,34 +76,39 @@ import { NewSubject } from '@/types/type';
                     {{ day.dayName }}
                   </span>
                 </td>
-                <template v-for="( data, index) in day.studyMaterials" :key="index">
+                <template v-for="( data, index) in day.times" :key="index">
                   <td
                  
                     style="padding: 4px;border-left: 1px black solid; border-top: 1px black solid; min-width: 50%; min-height: 250px; max-height: 81px; max-width: 140px"
-                    v-if="data.materialName"
+                    v-if="data.studyMaterial != null"
                     class="class-item"
-                    :style="{ backgroundColor: data.color }"
-                    @click="openDialog(data)"
+                    :style="{ backgroundColor: data.studyMaterial.color }"
+                    draggable="true"
+                    @click="openDialog(data.studyMaterial, data.id)"
+                    @dragstart="HandleDrag(data.studyMaterial,data.id)"
+                    @drop="HandleDrop(data.id)"
+                    @dragover.prevent
+                    @dragenter.prevent
                   >
                  
                     <div  dir="rtl" class=" d-flex flex-column justify-space-between" style="height: 100%;">
                       <div></div>
-                      <div class="position-absolute" v-if="data.state == 0"></div>
+                      <div class="position-absolute" v-if="data.studyMaterial.state == 0"></div>
                       <div class="" v-else >
-                        <v-chip class="position-absolute" size="x-small" variant="flat" :color="`${getEnumByValue(statesType,data.state).color}`">
-                          {{ getEnumByValue(statesType,data.state).name }}
+                        <v-chip class="position-absolute" size="x-small" variant="flat" :color="`${getEnumByValue(statesType,data.studyMaterial.state).color}`">
+                          {{ getEnumByValue(statesType,data.studyMaterial.state).name }}
                         </v-chip>
                       </div>
                       <div class="d-flex justify-center">
-                        <p class="text-center font-weight-bold mt-auto pr-2" style=" max-width: 80% ; min-height: 80px; font-size: 20px;">{{ data.materialName }}</p>
+                        <p class="text-center font-weight-bold mt-auto pr-2" style=" max-width: 80% ; min-height: 80px; font-size: 20px;">{{ data.studyMaterial.materialName }}</p>
                       </div>
                       <div class="d-flex justify-space-between font-weight-bold" >
-                        <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.doctorName }} </p>
-                        <p style="">{{ data.studyHall }}</p>
+                        <p style="max-width: 63%; overflow-x: hidden;" class="text-no-wrap" >{{ data.studyMaterial.doctorName }} </p>
+                        <p style="">{{ data.studyMaterial.studyHall }}</p>
                       </div>
                     </div>
                   </td>
-                  <td v-else class="class-item" @click="tableStore.newSubjectDialog = true , tableStore.newSubject = {} as NewSubject ,tableStore.newSubject.dayOfWeekId = day.id , tableStore.newSubject.numberToOrder = data.numberToOrder" style="border-left: 1px black solid; border-top: 1px black solid;  height: 100px;" ></td>
+                  <td v-else  @drop="HandleDrop(data.id)" @dragenter.prevent @dragover.prevent class="class-item" @click="tableStore.newSubjectDialog = true , tableStore.newSubject = {} as NewSubject ,tableStore.newSubject.timeId = data.id " style="border-left: 1px black solid; border-top: 1px black solid;  height: 100px;" >  </td>
                 </template>
               </tr>
             </tbody>
@@ -249,10 +235,10 @@ import { NewSubject } from '@/types/type';
                 <v-text-field  style="font-weight: bold; width: 300px; height: 50px;" v-model="tableStore.singleSubject.studyHall" dir="rtl" variant="outlined"></v-text-field>
               </div>
 
-              <div>
+              <!-- <div>
               <p style="font-weight: bold;"><strong>اليوم :</strong></p>
               <v-select style="font-weight: bold; width: 300px; height: 50px;" v-model="tableStore.singleSubject.dayOfWeekId" :items="days" item-value="id" item-title="day" variant="outlined"></v-select>
-            </div>
+            </div> -->
 
               <div class=" d-flex">
               <p class=" ml-2" style="font-weight: bold; font-size: 19px;"> الملفات :</p>
@@ -302,10 +288,10 @@ import { NewSubject } from '@/types/type';
                   <v-text-field v-model="tableStore.singleSubject.description " style="font-weight: bold; width: 300px; height: 50px;" dir="rtl" variant="outlined"> </v-text-field>
                 </div>
 
-                <div>
+                <!-- <div>
                     <p style="font-weight: bold; font-size: 19px;"><strong>المحاضرة :</strong></p>
                     <v-select style="font-weight: bold; width: 300px; height: 50px;" v-model="tableStore.singleSubject.numberToOrder" :disabled="tableStore.startEdit" :items="[1,2,3,4,5]"  variant="outlined"></v-select>
-                 </div>
+                 </div> -->
 
                  <div class="d-flex flex-column">
                   <p style="font-weight: bold; font-size: 19px;">اختار اللون :</p>
@@ -326,7 +312,7 @@ import { NewSubject } from '@/types/type';
             
             <div v-if="!tableStore.startEdit" class="d-flex justify-space-between ga-4" >
               <v-btn :loading="tableStore.loading" @click="tableStore.Editlesson(tableStore.singleSubject)" class="mt-2" size="large" variant="outlined" style="color: black; font-size: larger; font-weight: bold;">حفظ</v-btn>
-              <v-btn :loading="tableStore.loading" @click="tableStore.removeSubject(tableStore.singleSubject.id)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
+              <v-btn :loading="tableStore.loading" @click="tableStore.removeSubject(tableStore.singleSubject.timeId)" class="mt-2 bg-red-accent-4" size="large"  color="danger" style=" font-size: larger; font-weight: bold;">احذف المادة</v-btn>
             </div>
           </v-card-text>
         </v-card>
